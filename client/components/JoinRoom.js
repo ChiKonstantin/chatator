@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-  joinRoom,
-  postMessage,
-  getUsers,
-} from '../../../chatator/client/store';
+import { joinRoom, postMessage, getUsers } from '../store';
 import { connect } from 'react-redux';
 
 export class JoinRoom extends React.Component {
@@ -27,21 +23,22 @@ export class JoinRoom extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
+    //packaging user info
     const currentUser = {
       userName: this.state.userName,
       roomCode: this.state.roomCode,
       userLang: this.state.userLang,
     };
+    //packaging join message
     const joinMessage = {
-      userId: user.id,
-      message: `${user.userName} joined the room! 🦜`,
+      message: `${this.state.userName} joined the room! 🦜`,
       messageLang: 'en',
-      roomCode: user.roomCode,
+      roomCode: this.state.roomCode,
     };
-    // this.props.joinRoom(currentUser);
-    // this.props.postMessage(joinMessage);
-    // this.props.getUsers();
-    console.log('SUBMITTED, language:', currentUser);
+    this.props.joinRoom({ currentUser });
+    this.props.postMessage({ joinMessage });
+    this.props.getUsers();
+    console.log('USER: ', currentUser);
   }
 
   render() {
@@ -117,4 +114,18 @@ export class JoinRoom extends React.Component {
 //   };
 // };
 
-// export default connect(stateMapper, dispatchMapper)(JoinRoom);
+// const mapState = (state) => {
+//   console.log('mapping state to props: ', state);
+//   return {};
+// };
+
+const mapDispatch = (dispatch) => {
+  console.log('mapping dispatch to props');
+  return {
+    joinRoom: (user) => dispatch(joinRoom(user)),
+    postMessage: (message) => dispatch(postMessage(message)),
+    getUsers: () => dispatch(getUsers()),
+  };
+};
+
+export default connect(null, mapDispatch)(JoinRoom);
