@@ -32,7 +32,7 @@ export const setUsers = (users) => {
 export const joinRoom = (user) => {
   return async (dispatch) => {
     try {
-      const { data } = await axios.post('/api/users', { user });
+      const { data } = await axios.post('/api/users', user);
       console.log('joinRoom sent user info:', data);
       dispatch(setSelf(data));
       // clientSocket.emit('user-joined', data);
@@ -58,7 +58,7 @@ export const getUsers = () => {
 export const postMessage = (inputMessage) => {
   return async (dispatch) => {
     try {
-      const { data } = await axios.post('/api/messages', { inputMessage });
+      const { data } = await axios.post('/api/messages', inputMessage);
       dispatch(addNewMessage(data));
       console.log('postMessage sent message', data);
       // clientSocket.emit('new-message', data);

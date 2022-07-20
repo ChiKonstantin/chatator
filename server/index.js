@@ -34,6 +34,9 @@ app.use(express.static(path.join(__dirname, '../public')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// app.use(express.json());
+// app.use(express.urlencoded({ extended: true }));
+
 //mounting all api routes on /api - other routes collected from index.js in apiRoutes
 app.use('/api', router);
 

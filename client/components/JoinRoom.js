@@ -6,8 +6,8 @@ export class JoinRoom extends React.Component {
   constructor() {
     super();
     this.state = {
-      roomCode: '',
       userName: '',
+      roomCode: '',
       userLang: '',
     };
     this.handleChange = this.handleChange.bind(this);
@@ -21,7 +21,7 @@ export class JoinRoom extends React.Component {
     });
   }
 
-  handleSubmit(event) {
+  async handleSubmit(event) {
     event.preventDefault();
     //packaging user info
     const currentUser = {
@@ -29,14 +29,16 @@ export class JoinRoom extends React.Component {
       roomCode: this.state.roomCode,
       userLang: this.state.userLang,
     };
+    console.log('Current user info for db:', currentUser);
     //packaging join message
     const joinMessage = {
       message: `${this.state.userName} joined the room! 🦜`,
       messageLang: 'en',
       roomCode: this.state.roomCode,
     };
-    this.props.joinRoom({ currentUser });
-    this.props.postMessage({ joinMessage });
+    console.log('Join message to send to db', joinMessage);
+    await this.props.joinRoom(currentUser);
+    await this.props.postMessage(joinMessage);
     this.props.getUsers();
     // console.log('USER: ', currentUser);
   }
@@ -76,8 +78,8 @@ export class JoinRoom extends React.Component {
     ];
     return (
       <div>
-        <h3>JOIN ROOM!</h3>
-        <form className='join-form' onSubmit={this.handleSubmit}>
+        <h3 key='div'>JOIN ROOM!</h3>
+        <form className='join-form' onSubmit={this.handleSubmit} key='form'>
           <input
             name='roomCode'
             value={this.state.roomCode}
@@ -94,7 +96,9 @@ export class JoinRoom extends React.Component {
             onChange={this.handleChange}
           >
             {languages.map((language) => (
-              <option value={language.code}>{language.name}</option>
+              <option value={language.code} key={`lang_${language.code}`}>
+                {language.name}
+              </option>
             ))}
           </select>
           <button className='submit-button' type='submit'>

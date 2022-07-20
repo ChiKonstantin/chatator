@@ -72,8 +72,8 @@ async function syncDb() {
   //Alternative, for when to drop tables:
   // await db.sync({ force: true });
   console.log('Synced!');
-  await db.close();
-  console.log('Closed db.');
+  // await db.close();
+  // console.log('Closed db.');
 }
 
 syncDb();
