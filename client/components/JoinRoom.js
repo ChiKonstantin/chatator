@@ -38,7 +38,7 @@ export class JoinRoom extends React.Component {
     this.props.joinRoom({ currentUser });
     this.props.postMessage({ joinMessage });
     this.props.getUsers();
-    console.log('USER: ', currentUser);
+    // console.log('USER: ', currentUser);
   }
 
   render() {
