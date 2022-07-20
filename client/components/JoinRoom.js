@@ -40,7 +40,6 @@ export class JoinRoom extends React.Component {
     await this.props.joinRoom(currentUser);
     await this.props.postMessage(joinMessage);
     this.props.getUsers();
-    // console.log('USER: ', currentUser);
   }
 
   render() {
@@ -84,16 +83,19 @@ export class JoinRoom extends React.Component {
             name='roomCode'
             value={this.state.roomCode}
             onChange={this.handleChange}
+            placeholder='Room Code'
           />
           <input
             name='userName'
             value={this.state.userName}
             onChange={this.handleChange}
+            placeholder='Name'
           />
           <select
             name='userLang'
             value={this.state.userLang}
             onChange={this.handleChange}
+            placeholder='Language'
           >
             {languages.map((language) => (
               <option value={language.code} key={`lang_${language.code}`}>
@@ -109,19 +111,6 @@ export class JoinRoom extends React.Component {
     );
   }
 }
-
-// const dispatchMapper = (dispatch) => {
-//   return {
-//     joinRoom: (user) => dispatch(joinRoom(user)),
-//     postMessage: (message) => dispatch(postMessage(message)),
-//     getUsers: () => dispatch(getUsers()),
-//   };
-// };
-
-// const mapState = (state) => {
-//   console.log('mapping state to props: ', state);
-//   return {};
-// };
 
 const mapDispatch = (dispatch) => {
   console.log('mapping dispatch to props');

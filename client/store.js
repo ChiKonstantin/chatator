@@ -6,6 +6,7 @@ import { clientSocket } from './clientSocket';
 const ADD_NEW_MESSAGE = 'ADD_NEW_MESSAGE';
 const SET_SELF = 'SET_SELF';
 const SET_USERS = 'SET_USERS';
+const SET_ALL_MESSAGES = 'SET_ALL_MESSAGES';
 
 export const addNewMessage = (message) => {
   return {
@@ -29,12 +30,13 @@ export const setUsers = (users) => {
   };
 };
 
-export const joinRoom = (user) => {
+export const joinRoom = (user, history) => {
   return async (dispatch) => {
     try {
       const { data } = await axios.post('/api/users', user);
       console.log('joinRoom sent user info:', data);
       dispatch(setSelf(data));
+      // history.push('/');
       // clientSocket.emit('user-joined', data);
       //when someone joins everyone re-sets users
     } catch (error) {
@@ -60,7 +62,7 @@ export const postMessage = (inputMessage) => {
     try {
       const { data } = await axios.post('/api/messages', inputMessage);
       dispatch(addNewMessage(data));
-      console.log('postMessage sent message', data);
+      // console.log('postMessage sent message', data);
       // clientSocket.emit('new-message', data);
     } catch (error) {
       console.log(error);
