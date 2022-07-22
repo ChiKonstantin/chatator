@@ -40,7 +40,11 @@ export class JoinRoom extends React.Component {
     await this.props.joinRoom(currentUser);
     await this.props.postMessage(joinMessage);
     await this.props.getUsers();
-    console.log('Store:', this.props);
+    this.setState({
+      userName: '',
+      roomCode: '',
+      userLang: '',
+    });
 
     // this.props.history.push(`/room`);
   }

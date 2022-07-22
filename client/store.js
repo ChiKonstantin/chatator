@@ -64,9 +64,26 @@ export const getUsers = () => {
 export const postMessage = (message) => {
   return async (dispatch) => {
     try {
-      const { data } = await axios.post('/api/messages', message);
-      dispatch(addNewMessage(data));
-      clientSocket.emit('new-message', data);
+      // const { data } = await axios.post('/api/messages', message);
+      dispatch(addNewMessage(message));
+      clientSocket.emit('new-message', message);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+export const confirmUserPresence = () => {
+  return (dispatch) => {
+    try {
+      dispatch(
+        postMessage({
+          message: `${self.userName} is here!`,
+          messageLang: 'en',
+          roomCode: self.roomCode,
+          userId: self.id,
+        })
+      );
     } catch (error) {
       console.log(error);
     }

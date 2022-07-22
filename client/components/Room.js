@@ -3,6 +3,7 @@ import axios from 'axios';
 import Message from './Message';
 import { connect } from 'react-redux';
 import { postMessage } from '../store';
+import { clientSocket } from '../clientSocket';
 
 export class Room extends React.Component {
   constructor(props) {
@@ -14,6 +15,7 @@ export class Room extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.renderMessages = this.renderMessages.bind(this);
+    this.testWhoIsOnline = this.testWhoIsOnline.bind(this);
   }
 
   handleChange(event) {
@@ -22,7 +24,7 @@ export class Room extends React.Component {
     });
   }
 
-  async handleSubmit(event) {
+  handleSubmit(event) {
     event.preventDefault();
     const message = {
       message: this.state.newMessage,
@@ -41,6 +43,11 @@ export class Room extends React.Component {
     } else {
       return messagesArr.map((message) => <Message message={message} />);
     }
+  }
+
+  testWhoIsOnline() {
+    console.log('TESTING WHO IS ONLINE');
+    clientSocket.emit('test-users');
   }
 
   render() {
@@ -73,6 +80,13 @@ export class Room extends React.Component {
           />
           <button type='submit'>send</button>
         </form>
+        <button
+          onClick={() => {
+            this.testWhoIsOnline();
+          }}
+        >
+          check who is online
+        </button>
         <div className='messages_wrapper'>{this.renderMessages()}</div>
       </div>
     );
@@ -80,6 +94,7 @@ export class Room extends React.Component {
 }
 
 const mapState = (state) => {
+  см;
   return {
     self: state.self,
     users: state.users,

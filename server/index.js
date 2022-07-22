@@ -23,6 +23,9 @@ serverSocket.on('connection', (socket) => {
   socket.on('user-joined', () => {
     socket.broadcast.emit('user-joined');
   });
+  socket.on('test-users', () => {
+    socket.broadcast.emit('test-users');
+  });
 });
 
 //MIDDLEWARE:
