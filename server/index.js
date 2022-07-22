@@ -17,8 +17,11 @@ const serverSocket = socket(server);
 
 serverSocket.on('connection', (socket) => {
   console.log(`Connection from client ${socket.id}`);
-  socket.on('new-message', (inputMessage) => {
-    socket.broadcast.emit('new-message', inputMessage);
+  socket.on('new-message', (message) => {
+    socket.broadcast.emit('new-message', message);
+  });
+  socket.on('user-joined', () => {
+    socket.broadcast.emit('user-joined');
   });
 });
 

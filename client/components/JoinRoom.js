@@ -1,10 +1,12 @@
 import React from 'react';
 import { joinRoom, postMessage, getUsers } from '../store';
 import { connect } from 'react-redux';
+import history from '../history';
+import { clientSocket } from '../clientSocket';
 
 export class JoinRoom extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       userName: '',
       roomCode: '',
@@ -29,17 +31,18 @@ export class JoinRoom extends React.Component {
       roomCode: this.state.roomCode,
       userLang: this.state.userLang,
     };
-    console.log('Current user info for db:', currentUser);
     //packaging join message
     const joinMessage = {
       message: `${this.state.userName} joined the room! 🦜`,
       messageLang: 'en',
       roomCode: this.state.roomCode,
     };
-    console.log('Join message to send to db', joinMessage);
     await this.props.joinRoom(currentUser);
     await this.props.postMessage(joinMessage);
-    this.props.getUsers();
+    await this.props.getUsers();
+    console.log('Store:', this.props);
+
+    // this.props.history.push(`/room`);
   }
 
   render() {
@@ -112,8 +115,14 @@ export class JoinRoom extends React.Component {
   }
 }
 
+const mapState = (state) => {
+  return {
+    state,
+  };
+};
+
 const mapDispatch = (dispatch) => {
-  console.log('mapping dispatch to props');
+  console.log('Mapping dispatch to props in JoinRoom');
   return {
     joinRoom: (user) => dispatch(joinRoom(user)),
     postMessage: (message) => dispatch(postMessage(message)),
@@ -121,4 +130,4 @@ const mapDispatch = (dispatch) => {
   };
 };
 
-export default connect(null, mapDispatch)(JoinRoom);
+export default connect(mapState, mapDispatch)(JoinRoom);

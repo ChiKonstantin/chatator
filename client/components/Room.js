@@ -24,30 +24,17 @@ export class Room extends React.Component {
 
   async handleSubmit(event) {
     event.preventDefault();
-    this.props.postMessage(newMessage);
-    // const res = await fetch('https://libretranslate.de/translate', {
-    //   method: 'POST',
-    //   body: JSON.stringify({
-    //     q: this.state.newMessage,
-    //     source: 'en',
-    //     target: 'es',
-    //     format: 'text',
-    //   }),
-    //   headers: { 'Content-Type': 'application/json' },
-    // });
-    // // console.log(await res.json());
-    // let translatedMessage = await res.json();
-    // // console.log('HERES A TRANSLATION', translatedMessage.translatedText);
-    // console.log('new message:', this.state.newMessage);
-    // let messageBufferArr = this.state.allMessages.slice();
-    // messageBufferArr.push(translatedMessage.translatedText);
-    // // console.log('message buffer array:', messageBufferArr);
-    // await this.setState({ newMessage: '', allMessages: messageBufferArr });
-    // // console.log('in all messages:', this.state.allMessages);
+    const message = {
+      message: this.state.newMessage,
+      messageLang: this.props.self.userLang,
+      roomCode: this.props.self.roomCode,
+      userId: this.props.self.id,
+    };
+    this.props.postMessage(message);
+    this.setState({ newMessage: '' });
   }
 
   renderMessages() {
-    console.log('THIS PROPS MESSAGES: ', this.props.messages);
     const messagesArr = this.props.messages;
     if (messagesArr === undefined || messagesArr.length === 0) {
       return '...';
@@ -59,7 +46,22 @@ export class Room extends React.Component {
   render() {
     return (
       <div>
-        <div className='messages_wrapper'>{this.renderMessages()}</div>
+        <div>
+          <h3>Self info</h3>
+          Name: {this.props.self.userName}
+          <br />
+          Language: {this.props.self.userLang}
+          <br />
+          Room: {this.props.self.roomCode}
+          <br />
+        </div>
+        <div>
+          <h3>Users in this room:</h3>
+          {this.props.users.map((user) => {
+            return `${user.userName} - ${user.userLang}, `;
+          })}
+          <div>---</div>
+        </div>
         <form onSubmit={this.handleSubmit} className='form'>
           <input
             type='text'
@@ -71,6 +73,7 @@ export class Room extends React.Component {
           />
           <button type='submit'>send</button>
         </form>
+        <div className='messages_wrapper'>{this.renderMessages()}</div>
       </div>
     );
   }
