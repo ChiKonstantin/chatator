@@ -14,6 +14,7 @@ export class JoinRoom extends React.Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    // this.pushHistory = this.pushHistory.bind(this);
   }
 
   handleChange(event) {
@@ -22,6 +23,10 @@ export class JoinRoom extends React.Component {
       [event.target.name]: event.target.value,
     });
   }
+
+  // pushHistory() {
+  //   return history.push('/room');
+  // }
 
   async handleSubmit(event) {
     event.preventDefault();
@@ -45,8 +50,7 @@ export class JoinRoom extends React.Component {
       roomCode: '',
       userLang: '',
     });
-
-    // this.props.history.push(`/room`);
+    history.push('/room');
   }
 
   render() {

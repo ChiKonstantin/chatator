@@ -94,7 +94,6 @@ export class Room extends React.Component {
 }
 
 const mapState = (state) => {
-  см;
   return {
     self: state.self,
     users: state.users,
