@@ -1,11 +1,18 @@
 import React, { useState } from 'react';
-import useForm from './hooks/useForm';
+import socket from 'socket.io-client';
+import Message from './Message';
 
 export default function Chat() {
-  const [values, handleChange] = useForm();
-  const [self, setSelf] = useState({ isInRoom: false, userName: 'poop' });
+  const [values, setValues] = useState({});
+  const handleChange = (event) => {
+    event.persist();
+    setValues((state) => ({ ...state, [e.target.name]: e.target.value }));
+  };
+
+  // available variables
   const [users, setUsers] = useState({});
-  const [messages, setMessages] = useState({});
+  const [messages, setMessages] = useState([]);
+
   const languages = [
     { code: 'en', name: 'English' },
     { code: 'ar', name: 'Arabic' },
@@ -38,84 +45,143 @@ export default function Chat() {
     { code: 'uk', name: 'Ukranian' },
     { code: 'vi', name: 'Vietnamese' },
   ];
+  const [self, setSelf] = useState({ isInRoom: false });
 
-  const handleJoinRoom = async function (event) {
-    event.preventDefault();
-    setSelf({ ...self, isInRoom: true });
-    console.log('THIS IS SELF: ', self);
-    // //packaging user info
-    // const currentUser = {
-    //   userName: self.userName,
-    //   userRoom: self.userCode,
-    //   userLang: self.userLang,
-    // };
-    // //packaging join message
-    // const joinMessage = {
-    //   message: `${self.userName} joined the room! 🦜`,
-    //   messageLang: 'en',
-    //   messageRoom: self.userRoom,
-    // };
-    // await this.props.joinRoom(currentUser);
-    // await this.props.postMessage(joinMessage);
-    // await this.props.getUsers();
-    // this.setState({
-    //   userName: '',
-    //   roomCode: '',
-    //   userLang: '',
+  //client socket:
+  const clientSocket = socket(window.location.origin);
+
+  clientSocket.on('connect', () => {
+    //promt that the socket is connected
+    console.log('Socket connected to server');
+    //listening for emmited events which trigger function execution:
+    clientSocket.on('new-message', (inputMessage) => {
+      // console.log('clientSocket received new-message event', inputMessage);
+      // store.dispatch(translateMessage(inputMessage));
+    });
+    clientSocket.on('user-joined', () => {
+      // store.dispatch(getUsers());
+      // console.log('clientSocket received user-joined event');
+    });
+    clientSocket.on('test-users', () => {
+    //   store.dispatch(confirmUserPresence());
     // });
+  });
+
+  //supporting functions:
+  const handleJoinRoom = async function (event) {
+    // add a check for no more than 2 people in the room currently
+    // add a check for username in the room... should only be fired after room is checked.
+    event.preventDefault();
+    setSelf({
+      ...self,
+      isInRoom: true,
+      userName: values.userName,
+      userRoom: values.userRoom,
+      userLang: values.userLang,
+    });
+
+    //packaging join message
+    const joinMessage = {
+      message: `${values.userName} joined the room! 🦜`,
+      messageLang: 'en',
+      messageRoom: values.userRoom,
+      messageUser: '📢',
+      messageType: 'admin',
+    };
+    sendMessage(joinMessage);
+    // add a function to check who is in the room
+  };
+
+  const handleSendMessage = function (message, event) {
+    event.preventDefault();
+    if (message === '' || message === undefined) {
+    } else {
+      const newMessage = {
+        message: message,
+        messageLang: self.userLang,
+        messageRoom: self.userRoom,
+        messageUser: self.userName,
+        // messageType: 'user',
+      };
+      sendMessage(newMessage);
+      setValues({});
+    }
+  };
+
+  const sendMessage = function (newMessage) {
+    setMessages([...messages, newMessage]);
+    clientSocket.emit('new-message', newMessage);
+  };
+
+  //add 'accept message' function
+  const acceptMessage = function () {};
+
+  //add room attendance function
+  const checkAttendance = function () {};
+
+  const renderMessages = function (messages) {
+    if (messages === undefined || messages.length === 0) {
+      return '...';
+    } else {
+      return messages.map((message) => <Message message={message} />);
+    }
   };
 
   return (
     <div className='chat-page'>
       {self.isInRoom ? (
         <div className='room-comp'>
-          <h1>ROOM JOINED!</h1>
-          <h2>{self.userName}</h2>
-          {/* <div>
-            <h3>Self info</h3>
-            Name: {this.props.self.userName}
-            <br />
-            Language: {this.props.self.userLang}
-            <br />
-            Room: {this.props.self.roomCode}
-            <br />
-          </div>
           <div>
-            <h3>Users in this room:</h3>
-            {this.props.users.map((user) => {
-              return `${user.userName} - ${user.userLang}, `;
-            })}
+            <h1>Welcome, {self.userName}!</h1>
+            <h2>Here's some info about you:</h2>
+            <h3>
+              Your name is {self.userName}
+              <br /> Your room code is: {self.userRoom}
+              <br /> And your language is: {self.userLang}
+              <br />
+            </h3>
+          </div>
+
+          <div>
+            <h3>Users in this room: {self.userName}</h3>
+            {/* add a function to check who is in the room */}
             <div>---</div>
           </div>
-          <form onSubmit={this.handleSubmit} className='form'>
+
+          <form
+            // onSubmit={(event) => sendMessage(values.newMessage, event)}
+            onSubmit={(event) => handleSendMessage(values.newMessage, event)}
+            className='form'
+          >
             <input
               type='text'
               id='entry'
               name='newMessage'
-              value={this.state.newMessage}
-              onChange={this.handleChange}
+              value={values.newMessage || ''}
+              onChange={handleChange}
               placeholder='Message here'
             />
             <button type='submit'>send</button>
           </form>
-          <button
+
+          {/* <button
             onClick={() => {
               this.testWhoIsOnline();
             }}
           >
             check who is online
-          </button>
-          <div className='messages_wrapper'>{this.renderMessages()}</div> */}
+          </button> */}
+
+          <div className='messages_wrapper'>{renderMessages(messages)}</div>
         </div>
       ) : (
         <div className='waiting-room'>
           <h3 key='div'>JOIN ROOM!</h3>
           <form className='join-form' onSubmit={handleJoinRoom} key='form'>
             <input
-              type='text'
-              name='roomCode'
+              name='userRoom'
               onChange={handleChange}
-              value={values.roomCode || ''}
+              value={values.userRoom || ''}
               placeholder='Room Code'
             />
             <input
@@ -125,7 +191,7 @@ export default function Chat() {
               value={values.userName || ''}
               placeholder='Name'
             />
-            {/* <select
+            <select
               name='userLang'
               onChange={handleChange}
               value={values.userLang || ''}
@@ -136,7 +202,7 @@ export default function Chat() {
                   {language.name}
                 </option>
               ))}
-            </select> */}
+            </select>
             <button className='submit-button' type='submit'>
               SUBMIT
             </button>
