@@ -17,8 +17,11 @@ const serverSocket = socket(server);
 
 serverSocket.on('connection', (socket) => {
   console.log(`Connection from client ${socket.id}`);
+  socket.on('join-room', (roomCode) => {
+    socket.join(roomCode);
+  });
   socket.on('new-message', (message) => {
-    socket.broadcast.emit('new-message', message);
+    socket.broadcast.to(message.messageRoom).emit('new-message', message);
   });
 });
 

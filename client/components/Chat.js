@@ -33,6 +33,7 @@ export default function Chat() {
       userLang: values.userLang,
     };
     dispatch(setSelf(selfInfo));
+    clientSocket.emit('join-room', values.userRoom);
     joinedRoomNotify();
     // add a function to check who is in the room
   };
