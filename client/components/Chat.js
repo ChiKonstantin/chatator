@@ -3,48 +3,15 @@ import React, { useState } from 'react';
 import Message from './Message';
 import { clientSocket } from '../clientSocket';
 import { useSelector, useDispatch } from 'react-redux';
-import { postMessage, translateMessage, setSelf } from '../store';
+import { postMessage, setSelf, joinedRoomNotify } from '../store';
+import { languages } from '../langList';
 
 export default function Chat() {
   const dispatch = useDispatch();
   const [values, setValues] = useState({});
-  // const [self, setSelf] = useState({ isInRoom: false });
-  // const [messages, setMessages] = useState([]);
   const messages = useSelector((state) => state.messages);
   const self = useSelector((state) => state.self);
 
-  const languages = [
-    { code: 'en', name: 'English' },
-    { code: 'ar', name: 'Arabic' },
-    { code: 'az', name: 'Azerbaijani' },
-    { code: 'zh', name: 'Chinese' },
-    { code: 'cs', name: 'Czech' },
-    { code: 'da', name: 'Danish' },
-    { code: 'nl', name: 'Dutch' },
-    { code: 'eo', name: 'Esperanto' },
-    { code: 'fi', name: 'Finnish' },
-    { code: 'fr', name: 'French' },
-    { code: 'de', name: 'German' },
-    { code: 'el', name: 'Greek' },
-    { code: 'he', name: 'Hebrew' },
-    { code: 'hi', name: 'Hindi' },
-    { code: 'hu', name: 'Hungarian' },
-    { code: 'id', name: 'Indonesian' },
-    { code: 'ga', name: 'Irish' },
-    { code: 'it', name: 'Italian' },
-    { code: 'ja', name: 'Japanese' },
-    { code: 'ko', name: 'Korean' },
-    { code: 'fa', name: 'Persian' },
-    { code: 'pl', name: 'Polish' },
-    { code: 'pt', name: 'Portuguese' },
-    { code: 'ru', name: 'Russian' },
-    { code: 'sk', name: 'Slovak' },
-    { code: 'es', name: 'Spanish' },
-    { code: 'sv', name: 'Swedish' },
-    { code: 'tr', name: 'Turkish' },
-    { code: 'uk', name: 'Ukranian' },
-    { code: 'vi', name: 'Vietnamese' },
-  ];
   //Handling form input
   const handleChange = (event) => {
     event.persist();
@@ -66,16 +33,7 @@ export default function Chat() {
       userLang: values.userLang,
     };
     dispatch(setSelf(selfInfo));
-    console.log('SELF FROM CHAT', self);
-    //packaging join message
-    const joinMessage = {
-      message: `${values.userName} joined the room! 🦜`,
-      messageLang: 'en',
-      messageRoom: values.userRoom,
-      messageUser: '📢',
-      messageType: 'admin',
-    };
-    sendMessage(joinMessage);
+    joinedRoomNotify();
     // add a function to check who is in the room
   };
 
@@ -89,7 +47,7 @@ export default function Chat() {
         messageLang: self.userLang,
         messageRoom: self.userRoom,
         messageUser: self.userName,
-        // messageType: 'user',
+        messageType: 'user',
       };
       sendMessage(newMessage);
       setValues({});

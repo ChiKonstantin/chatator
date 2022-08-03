@@ -20,12 +20,6 @@ serverSocket.on('connection', (socket) => {
   socket.on('new-message', (message) => {
     socket.broadcast.emit('new-message', message);
   });
-  socket.on('user-joined', () => {
-    socket.broadcast.emit('user-joined');
-  });
-  socket.on('test-users', () => {
-    socket.broadcast.emit('test-users');
-  });
 });
 
 //MIDDLEWARE:
