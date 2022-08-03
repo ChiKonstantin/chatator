@@ -12,8 +12,9 @@ export const addNewMessage = function (message) {
     message,
   };
 };
-
+let localSelf = {};
 export const setSelf = function (self) {
+  localSelf = self;
   return {
     type: SET_SELF,
     self,
@@ -50,15 +51,15 @@ export const postMessage = function (message) {
 
 export const translateMessage = (message) => {
   return async function (dispatch) {
-    console.log('THIS IS SELF IN TRANSLATE', self);
+    console.log('THIS IS SELF IN TRANSLATE', localSelf);
     try {
-      if (message.messageLang !== self.userLang) {
+      if (message.messageLang !== localSelf.userLang) {
         const res = await fetch('https://libretranslate.de/translate', {
           method: 'POST',
           body: JSON.stringify({
             q: message.message,
             source: message.messageLang,
-            target: self.userLang,
+            target: localSelf.userLang,
             format: 'text',
           }),
           headers: { 'Content-Type': 'application/json' },
@@ -66,9 +67,9 @@ export const translateMessage = (message) => {
         let translatedRes = await res.json();
         const translatedMessage = {
           message: translatedRes.translatedText,
-          messageLang: self.userLang,
-          messageRoom: self.roomCode,
-          messageUser: self.userName,
+          messageLang: localSelf.userLang,
+          messageRoom: localSelf.roomCode,
+          messageUser: localSelf.userName,
           messageType: 'user',
         };
         dispatch(addNewMessage(translatedMessage));
