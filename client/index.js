@@ -14,10 +14,10 @@ import Chat from './components/Chat';
 const container = document.getElementById('app');
 const root = createRoot(container);
 root.render(
-  // <Provider store={store}>
-  //   <BrowserRouter history={history}>
-  //     <Main />
-  //   </BrowserRouter>
-  // </Provider>
-  <Chat />
+  <Provider store={store}>
+    {/* <BrowserRouter history={history}>
+     <Main />
+  </BrowserRouter> */}
+    <Chat />
+  </Provider>
 );

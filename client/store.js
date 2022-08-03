@@ -5,66 +5,24 @@ import { clientSocket } from './clientSocket';
 
 const ADD_NEW_MESSAGE = 'ADD_NEW_MESSAGE';
 const SET_SELF = 'SET_SELF';
-const SET_USERS = 'SET_USERS';
-const SET_ALL_MESSAGES = 'SET_ALL_MESSAGES';
 
-let self = {};
-
-export const addNewMessage = (message) => {
+export const addNewMessage = function (message) {
   return {
     type: ADD_NEW_MESSAGE,
     message,
   };
 };
 
-export const setSelf = (user) => {
-  self = user;
-  console.log('###SELF LOCALLY', self);
+export const setSelf = function (self) {
   return {
     type: SET_SELF,
-    self: user,
+    self,
   };
 };
 
-export const setUsers = (users) => {
-  return {
-    type: SET_USERS,
-    //users must be an array of objects
-    users: users,
-  };
-};
-
-export const joinRoom = (user) => {
-  return async (dispatch) => {
+export const postMessage = function (message) {
+  return async function (dispatch) {
     try {
-      const { data } = await axios.post('/api/users', user);
-      console.log('info to set self:', data);
-      dispatch(setSelf(data));
-      // history.push('/');
-      clientSocket.emit('user-joined');
-      //when someone joins everyone re-sets users
-    } catch (error) {
-      console.log(error);
-    }
-  };
-};
-
-export const getUsers = () => {
-  return async (dispatch) => {
-    try {
-      const { data } = await axios.get('/api/users');
-      console.log('get user fetched users:', data);
-      dispatch(setUsers(data));
-    } catch (error) {
-      console.log(error);
-    }
-  };
-};
-
-export const postMessage = (message) => {
-  return async (dispatch) => {
-    try {
-      // const { data } = await axios.post('/api/messages', message);
       dispatch(addNewMessage(message));
       clientSocket.emit('new-message', message);
     } catch (error) {
@@ -73,32 +31,33 @@ export const postMessage = (message) => {
   };
 };
 
-export const confirmUserPresence = () => {
-  return (dispatch) => {
-    try {
-      dispatch(
-        postMessage({
-          message: `${self.userName} is here!`,
-          messageLang: 'en',
-          roomCode: self.roomCode,
-          userId: self.id,
-        })
-      );
-    } catch (error) {
-      console.log(error);
-    }
-  };
-};
+// export const confirmUserPresence = function () {
+//   return function (dispatch) {
+//     try {
+//       dispatch(
+//         postMessage({
+//           message: `${self.userName} is here!`,
+//           messageLang: 'en',
+//           roomCode: self.roomCode,
+//           userId: self.id,
+//         })
+//       );
+//     } catch (error) {
+//       console.log(error);
+//     }
+//   };
+// };
 
-export const translateMessage = (inputMessage) => {
-  return async (dispatch) => {
+export const translateMessage = (message) => {
+  return async function (dispatch) {
+    console.log('THIS IS SELF IN TRANSLATE', self);
     try {
-      if (inputMessage.messageLang !== self.userLang) {
+      if (message.messageLang !== self.userLang) {
         const res = await fetch('https://libretranslate.de/translate', {
           method: 'POST',
           body: JSON.stringify({
-            q: inputMessage.message,
-            source: inputMessage.messageLang,
+            q: message.message,
+            source: message.messageLang,
             target: self.userLang,
             format: 'text',
           }),
@@ -106,16 +65,16 @@ export const translateMessage = (inputMessage) => {
         });
         let translatedRes = await res.json();
         const translatedMessage = {
-          userId: inputMessage.userId,
           message: translatedRes.translatedText,
           messageLang: self.userLang,
-          roomCode: self.roomCode,
+          messageRoom: self.roomCode,
+          messageUser: self.userName,
+          messageType: 'user',
         };
-        console.log('Translated message: ', translatedMessage);
         dispatch(addNewMessage(translatedMessage));
       } else {
-        console.log('Message does not need tranlation');
-        dispatch(addNewMessage(inputMessage));
+        console.log('Message does not need translation');
+        dispatch(addNewMessage(message));
       }
     } catch (error) {
       console.log(error);
@@ -124,10 +83,9 @@ export const translateMessage = (inputMessage) => {
 };
 
 const initialState = {
-  self: {},
-  users: [],
   //the messages should be in current user's language
   messages: [],
+  self: { isInRoom: false },
 };
 
 const reducer = (state = initialState, action) => {
@@ -136,8 +94,6 @@ const reducer = (state = initialState, action) => {
       return { ...state, messages: [...state.messages, action.message] };
     case SET_SELF:
       return { ...state, self: action.self };
-    case SET_USERS:
-      return { ...state, users: action.users };
     default:
       return state;
   }

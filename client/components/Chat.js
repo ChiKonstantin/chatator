@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
-import socket from 'socket.io-client';
+// import { clientSocket } from '../clientSocket';
 import Message from './Message';
+import { clientSocket } from '../clientSocket';
+import { useSelector, useDispatch } from 'react-redux';
+import { postMessage, translateMessage, setSelf } from '../store';
 
 export default function Chat() {
+  const dispatch = useDispatch();
   const [values, setValues] = useState({});
-  const handleChange = (event) => {
-    event.persist();
-    setValues((state) => ({ ...state, [e.target.name]: e.target.value }));
-  };
-
-  // available variables
-  const [users, setUsers] = useState({});
-  const [messages, setMessages] = useState([]);
+  // const [self, setSelf] = useState({ isInRoom: false });
+  // const [messages, setMessages] = useState([]);
+  const messages = useSelector((state) => state.messages);
+  const self = useSelector((state) => state.self);
 
   const languages = [
     { code: 'en', name: 'English' },
@@ -45,41 +45,28 @@ export default function Chat() {
     { code: 'uk', name: 'Ukranian' },
     { code: 'vi', name: 'Vietnamese' },
   ];
-  const [self, setSelf] = useState({ isInRoom: false });
-
-  //client socket:
-  const clientSocket = socket(window.location.origin);
-
-  clientSocket.on('connect', () => {
-    //promt that the socket is connected
-    console.log('Socket connected to server');
-    //listening for emmited events which trigger function execution:
-    clientSocket.on('new-message', (inputMessage) => {
-      // console.log('clientSocket received new-message event', inputMessage);
-      // store.dispatch(translateMessage(inputMessage));
-    });
-    clientSocket.on('user-joined', () => {
-      // store.dispatch(getUsers());
-      // console.log('clientSocket received user-joined event');
-    });
-    clientSocket.on('test-users', () => {
-    //   store.dispatch(confirmUserPresence());
-    // });
-  });
+  //Handling form input
+  const handleChange = (event) => {
+    event.persist();
+    setValues((state) => ({
+      ...state,
+      [event.target.name]: event.target.value,
+    }));
+  };
 
   //supporting functions:
   const handleJoinRoom = async function (event) {
     // add a check for no more than 2 people in the room currently
     // add a check for username in the room... should only be fired after room is checked.
     event.preventDefault();
-    setSelf({
-      ...self,
+    const selfInfo = {
       isInRoom: true,
       userName: values.userName,
       userRoom: values.userRoom,
       userLang: values.userLang,
-    });
-
+    };
+    dispatch(setSelf(selfInfo));
+    console.log('SELF FROM CHAT', self);
     //packaging join message
     const joinMessage = {
       message: `${values.userName} joined the room! 🦜`,
@@ -95,6 +82,7 @@ export default function Chat() {
   const handleSendMessage = function (message, event) {
     event.preventDefault();
     if (message === '' || message === undefined) {
+      console.log('Cannot send an empty message, sorry.');
     } else {
       const newMessage = {
         message: message,
@@ -108,9 +96,8 @@ export default function Chat() {
     }
   };
 
-  const sendMessage = function (newMessage) {
-    setMessages([...messages, newMessage]);
-    clientSocket.emit('new-message', newMessage);
+  const sendMessage = function (message) {
+    dispatch(postMessage(message));
   };
 
   //add 'accept message' function
