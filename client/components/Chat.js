@@ -4,13 +4,14 @@ import Message from './Message';
 import { clientSocket } from '../clientSocket';
 import { useSelector, useDispatch } from 'react-redux';
 import { postMessage, setSelf, joinedRoomNotify } from '../store';
-import { languages } from '../langList';
+import { languages } from '../support/langList';
 
 export default function Chat() {
   const dispatch = useDispatch();
   const [values, setValues] = useState({});
   const messages = useSelector((state) => state.messages);
   const self = useSelector((state) => state.self);
+  const users = useSelector((state) => state.users);
 
   //Handling form input
   const handleChange = (event) => {
@@ -22,19 +23,24 @@ export default function Chat() {
   };
 
   //supporting functions:
-  const handleJoinRoom = async function (event) {
+  const handleJoinRoom = function (event) {
     // add a check for no more than 2 people in the room currently
     // add a check for username in the room... should only be fired after room is checked.
     event.preventDefault();
+    const [langName] = languages.filter(
+      (lang) => lang.code === values.userLang
+    );
+    console.log(langName);
     const selfInfo = {
       isInRoom: true,
       userName: values.userName,
       userRoom: values.userRoom,
       userLang: values.userLang,
+      userLangName: langName.name,
     };
     dispatch(setSelf(selfInfo));
-    clientSocket.emit('join-room', values.userRoom);
-    joinedRoomNotify();
+    clientSocket.emit('join-room', selfInfo);
+    // joinedRoomNotify();
     // add a function to check who is in the room
   };
 
@@ -73,6 +79,19 @@ export default function Chat() {
     }
   };
 
+  const renderUsers = function (users) {
+    if (users === undefined || users.length === 0) {
+      return '~~~';
+    } else {
+      console.log('THIS IS USERS FROM FUNC', users);
+      return users.map((user) => {
+        <div>
+          {user.userName} speaks {user.userLangName}
+        </div>;
+      });
+    }
+  };
+
   return (
     <div className='chat-page'>
       {self.isInRoom ? (
@@ -88,11 +107,12 @@ export default function Chat() {
             </h3>
           </div>
 
-          <div>
-            <h3>Users in this room: {self.userName}</h3>
-            {/* add a function to check who is in the room */}
+          {/* <div className='users-wrapper'>
+            <h3>Users in this room: </h3>
+            {renderUsers(users)}
+         
             <div>---</div>
-          </div>
+          </div> */}
 
           <form
             // onSubmit={(event) => sendMessage(values.newMessage, event)}
@@ -118,7 +138,7 @@ export default function Chat() {
             check who is online
           </button> */}
 
-          <div className='messages_wrapper'>{renderMessages(messages)}</div>
+          <div className='messages-wrapper'>{renderMessages(messages)}</div>
         </div>
       ) : (
         <div className='waiting-room'>

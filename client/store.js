@@ -2,10 +2,11 @@ import { applyMiddleware, createStore } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import axios from 'axios';
 import { clientSocket } from './clientSocket';
-import { languages } from './langList';
+import { languages } from './support/langList';
 
 const ADD_NEW_MESSAGE = 'ADD_NEW_MESSAGE';
 const SET_SELF = 'SET_SELF';
+const ADD_USER_TO_LIST = 'ADD_USER_TO_LIST';
 
 export const addNewMessage = function (message) {
   return {
@@ -14,6 +15,13 @@ export const addNewMessage = function (message) {
   };
 };
 let localSelf = {};
+
+export const addUserToList = function (user) {
+  return {
+    type: ADD_USER_TO_LIST,
+    user,
+  };
+};
 
 export const setSelf = function (self) {
   localSelf = self;
@@ -72,25 +80,26 @@ export const translateMessage = (message) => {
   };
 };
 
-export const joinedRoomNotify = function () {
-  const [langName] = languages.filter(
-    (lang) => lang.code === localSelf.userLang
-  );
-  console.log('LANG NAME:', langName);
-  const joinedMessage = {
-    message: `${localSelf.userName} joined this room, they speak ${langName.name}.`,
-    messageLang: 'en',
-    messageRoom: localSelf.userRoom,
-    messageUser: '📢',
-    messageType: 'admin',
-  };
-  clientSocket.emit(`new-message`, joinedMessage);
-};
+// export const joinedRoomNotify = function () {
+//   const [langName] = languages.filter(
+//     (lang) => lang.code === localSelf.userLang
+//   );
+//   console.log('LANG NAME:', langName);
+//   const joinedMessage = {
+//     message: `${localSelf.userName} joined this room, they speak ${langName.name}.`,
+//     messageLang: 'en',
+//     messageRoom: localSelf.userRoom,
+//     messageUser: '📢',
+//     messageType: 'admin',
+//   };
+//   clientSocket.emit(`new-message`, joinedMessage);
+// };
 
 const initialState = {
   //the messages should be in current user's language
   messages: [],
   self: { isInRoom: false },
+  users: [],
 };
 
 const reducer = (state = initialState, action) => {
@@ -99,6 +108,8 @@ const reducer = (state = initialState, action) => {
       return { ...state, messages: [...state.messages, action.message] };
     case SET_SELF:
       return { ...state, self: action.self };
+    case ADD_USER_TO_LIST:
+      return { ...state, users: [...state.users, action.user] };
     default:
       return state;
   }

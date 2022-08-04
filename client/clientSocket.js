@@ -1,5 +1,5 @@
 import socket from 'socket.io-client';
-import store, { translateMessage } from './store';
+import store, { translateMessage, addUserToList } from './store';
 // import { useSelector, useDispatch } from 'react-redux';
 
 export const clientSocket = socket(window.location.origin);
@@ -11,5 +11,9 @@ clientSocket.on('connect', () => {
   clientSocket.on('new-message', (message) => {
     console.log('clientSocket received new-message event', message);
     store.dispatch(translateMessage(message));
+  });
+  clientSocket.on('add-user-to-room', (user) => {
+    console.log('USER WITH SOCKET ID: ', user);
+    store.dispatch(addUserToList(user));
   });
 });

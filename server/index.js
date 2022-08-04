@@ -5,6 +5,8 @@ const path = require('path'); // Node's path module
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const router = require('./apiRoutes');
+// const { getLangName } = require('../support/utils');
+// const getLangName = require('../client/support/utils');
 
 //listening to server PORT
 const server = app.listen(8080, function () {
@@ -17,12 +19,30 @@ const serverSocket = socket(server);
 
 serverSocket.on('connection', (socket) => {
   console.log(`Connection from client ${socket.id}`);
-  socket.on('join-room', (roomCode) => {
-    socket.join(roomCode);
+  socket.on('join-room', (user) => {
+    socket.join(user.userRoom);
+    //add socket.id to user's self properties
+    serverSocket.in(user.userRoom).emit('add-user-to-room', {
+      ...user,
+      userSocketId: socket.id,
+    });
+    socket.broadcast.to(user.userRoom).emit('new-message', {
+      message: `${user.userName} joined the room, they speak ${user.userLangName}!`,
+      messageLang: 'en',
+      messageRoom: user.userRoom,
+      messageUser: '📢',
+      messageType: 'admin',
+    });
   });
   socket.on('new-message', (message) => {
     socket.broadcast.to(message.messageRoom).emit('new-message', message);
   });
+  //add user leaving room feature in the future...
+  //link socket.id (which is given) with user when joining, and then
+  //determine which user left via the socket.id and emit customized message.
+  // socket.on('disconnect', () => {
+  //   socket.to(userRoom).emit('message', customMessageWithUserName);
+  // });
 });
 
 //MIDDLEWARE:
