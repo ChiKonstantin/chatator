@@ -7,7 +7,12 @@ const bodyParser = require('body-parser');
 const router = require('./apiRoutes');
 // const { getLangName } = require('../support/utils');
 // const getLangName = require('../client/support/utils');
-const { userArr, addUser, removeUser } = require('./db/usersStorage');
+const {
+  userArr,
+  addUser,
+  removeAndFetchDepartedUser,
+  fetchUsersInRoom,
+} = require('./db/usersStorage');
 //listening to server PORT
 const server = app.listen(8080, function () {
   console.log(`Listening to port`);
@@ -24,13 +29,15 @@ serverSocket.on('connection', (socket) => {
   socket.on('join-room', (user) => {
     socket.join(user.userRoom);
     //!!!! create a formula to strip userArr off of socket.ids
-    serverSocket.in(user.userRoom).emit('check-who-is-in-room', userArr);
+    serverSocket
+      .in(user.userRoom)
+      .emit('check-who-is-in-room', fetchUsersInRoom(user));
     const userWithSocket = {
       ...user,
       socketId: socket.id,
     };
+    // console.log('USER W SOCKET', userWithSocket);
     addUser(userWithSocket);
-
     serverSocket.in(user.userRoom).emit('add-user-to-room', userWithSocket);
     socket.broadcast.to(user.userRoom).emit('new-message', {
       message: `📢 ${user.userName} joined the room, they speak ${user.userLangName}!`,
@@ -50,6 +57,23 @@ serverSocket.on('connection', (socket) => {
   // socket.on('disconnect', () => {
   //   socket.to(userRoom).emit('message', customMessageWithUserName);
   // });
+
+  socket.on('disconnect', () => {
+    console.log('SOMEONE LEFT', socket.id);
+    const departedUser = removeAndFetchDepartedUser(socket.id);
+    if (departedUser !== undefined) {
+      socket.broadcast.to(departedUser.userRoom).emit('new-message', {
+        message: `📢 ${departedUser.userName} left the room.`,
+        messageLang: 'en',
+        messageRoom: departedUser.userRoom,
+        messageUser: '',
+        messageType: 'admin',
+      });
+      serverSocket
+        .in(departedUser.userRoom)
+        .emit('check-who-is-in-room', fetchUsersInRoom(departedUser));
+    }
+  });
 });
 
 //MIDDLEWARE:
