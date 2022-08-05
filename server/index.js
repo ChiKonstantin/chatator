@@ -10,6 +10,7 @@ const router = require('./apiRoutes');
 const {
   userArr,
   addUser,
+  checkRoomCode,
   removeAndFetchDepartedUser,
   fetchUsersInRoom,
 } = require('./db/usersStorage');
@@ -20,12 +21,14 @@ const server = app.listen(8080, function () {
 
 //socket connection to server
 const socket = require('socket.io');
+const { emit } = require('process');
 const serverSocket = socket(server);
 
 //tracking socket.id by userId
 
 serverSocket.on('connection', (socket) => {
   console.log(`Connection from client ${socket.id}`);
+  console.log('THIS IS CONENTS OF USER ARRAY, FYI: ', userArr);
   socket.on('join-room', (user) => {
     socket.join(user.userRoom);
     //!!!! create a formula to strip userArr off of socket.ids
@@ -46,6 +49,12 @@ serverSocket.on('connection', (socket) => {
       messageUser: '',
       messageType: 'admin',
     });
+  });
+
+  socket.on('check-room-code', (userRoomCode) => {
+    //formula should check the room code.
+    const response = checkRoomCode(userRoomCode);
+    serverSocket.to(socket.id).emit('check-room-response', response);
   });
 
   socket.on('new-message', (message) => {

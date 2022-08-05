@@ -4,6 +4,14 @@ const addUser = function (user) {
   userArr.push(user);
   console.log('THIS IS USER ARRAY ON SERVER:', userArr);
 };
+const checkRoomCode = function (roomCode) {
+  const usersInRoom = userArr.filter((user) => user.userRoom === roomCode);
+  if (usersInRoom.length > 0) {
+    return 1;
+  } else {
+    return 0;
+  }
+};
 
 const removeAndFetchDepartedUser = function (id) {
   const [userToRemove] = userArr.filter((user) => user.socketId === id);
@@ -20,6 +28,7 @@ const removeAndFetchDepartedUser = function (id) {
 };
 
 const fetchUsersInRoom = function (inputUser) {
+  //strip users off the socket id!
   const usersInRoom = userArr.filter(
     (user) => user.userRoom === inputUser.userRoom
   );
@@ -29,6 +38,7 @@ const fetchUsersInRoom = function (inputUser) {
 module.exports = {
   userArr,
   addUser,
+  checkRoomCode,
   removeAndFetchDepartedUser,
   fetchUsersInRoom,
 };
