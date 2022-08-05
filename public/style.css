@@ -1,4 +1,40 @@
-.messageBubble {
-  background-color: #0000ff;
+.message-bubble-self {
+  background-color: rgb(57, 230, 158);
   color: white;
+  font-family: Arial, Helvetica, sans-serif;
+  border-radius: 7px;
+  padding: 7px;
+  height: auto;
+  width: auto;
+}
+
+.message-bubble-roommate {
+  background-color: rgb(0, 109, 252);
+  color: white;
+  font-family: Arial, Helvetica, sans-serif;
+  border-radius: 7px;
+  padding: 7px;
+  height: auto;
+  width: auto;
+}
+
+.message-bubble-admin {
+  background-color: rgb(209, 209, 209);
+  color: white;
+  font-family: Arial, Helvetica, sans-serif;
+  border-radius: 7px;
+  padding: 7px;
+  height: auto;
+  width: auto;
+}
+
+.message-div-self {
+  text-align: right;
+}
+.message-div-admin {
+  text-align: center;
+}
+
+.message-div-roommate {
+  text-align: left;
 }

@@ -5,6 +5,7 @@ import { clientSocket } from '../clientSocket';
 import { useSelector, useDispatch } from 'react-redux';
 import { postMessage, setSelf, joinedRoomNotify } from '../store';
 import { languages } from '../support/langList';
+import UsersList from './UsersList';
 
 export default function Chat() {
   const dispatch = useDispatch();
@@ -27,11 +28,12 @@ export default function Chat() {
     // add a check for no more than 2 people in the room currently
     // add a check for username in the room... should only be fired after room is checked.
     event.preventDefault();
+    const randomId = Math.floor(Math.random() * 100000);
     const [langName] = languages.filter(
       (lang) => lang.code === values.userLang
     );
-    console.log(langName);
     const selfInfo = {
+      userId: randomId,
       isInRoom: true,
       userName: values.userName,
       userRoom: values.userRoom,
@@ -54,15 +56,12 @@ export default function Chat() {
         messageLang: self.userLang,
         messageRoom: self.userRoom,
         messageUser: self.userName,
-        messageType: 'user',
+        messageType: 'self',
       };
-      sendMessage(newMessage);
+      // sendMessage(newMessage);
+      dispatch(postMessage(newMessage));
       setValues({});
     }
-  };
-
-  const sendMessage = function (message) {
-    dispatch(postMessage(message));
   };
 
   //add 'accept message' function
@@ -83,12 +82,7 @@ export default function Chat() {
     if (users === undefined || users.length === 0) {
       return '~~~';
     } else {
-      console.log('THIS IS USERS FROM FUNC', users);
-      return users.map((user) => {
-        <div>
-          {user.userName} speaks {user.userLangName}
-        </div>;
-      });
+      return users.map((user) => <UsersList user={user} />);
     }
   };
 
@@ -106,13 +100,9 @@ export default function Chat() {
               <br />
             </h3>
           </div>
-
-          {/* <div className='users-wrapper'>
-            <h3>Users in this room: </h3>
-            {renderUsers(users)}
-         
-            <div>---</div>
-          </div> */}
+          <div>Users in the room:</div>
+          <ul className='users-wrapper'>{renderUsers(users)}</ul>
+          <div>---</div>
 
           <form
             // onSubmit={(event) => sendMessage(values.newMessage, event)}
@@ -129,14 +119,6 @@ export default function Chat() {
             />
             <button type='submit'>send</button>
           </form>
-
-          {/* <button
-            onClick={() => {
-              this.testWhoIsOnline();
-            }}
-          >
-            check who is online
-          </button> */}
 
           <div className='messages-wrapper'>{renderMessages(messages)}</div>
         </div>

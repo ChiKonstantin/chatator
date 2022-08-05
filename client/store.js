@@ -7,8 +7,10 @@ import { languages } from './support/langList';
 const ADD_NEW_MESSAGE = 'ADD_NEW_MESSAGE';
 const SET_SELF = 'SET_SELF';
 const ADD_USER_TO_LIST = 'ADD_USER_TO_LIST';
+const SET_USERS = 'SET_USERS';
 
 export const addNewMessage = function (message) {
+  console.log('ADDING NEW MESSAGE:', message);
   return {
     type: ADD_NEW_MESSAGE,
     message,
@@ -16,18 +18,27 @@ export const addNewMessage = function (message) {
 };
 let localSelf = {};
 
+export const setSelf = function (self) {
+  localSelf = self;
+  return {
+    type: SET_SELF,
+    self,
+  };
+};
+
 export const addUserToList = function (user) {
+  console.log('ADDING NEW USER:', user);
   return {
     type: ADD_USER_TO_LIST,
     user,
   };
 };
 
-export const setSelf = function (self) {
-  localSelf = self;
+export const setUsers = function (users) {
+  console.log('SETTING USERS', users);
   return {
-    type: SET_SELF,
-    self,
+    type: SET_USERS,
+    users,
   };
 };
 
@@ -46,33 +57,33 @@ export const postMessage = function (message) {
 export const translateMessage = (message) => {
   return async function (dispatch) {
     try {
-      if (message.messageRoom === localSelf.userRoom) {
-        if (message.messageLang !== localSelf.userLang) {
-          const res = await fetch('https://libretranslate.de/translate', {
-            method: 'POST',
-            body: JSON.stringify({
-              q: message.message,
-              source: message.messageLang,
-              target: localSelf.userLang,
-              format: 'text',
-            }),
-            headers: { 'Content-Type': 'application/json' },
-          });
-          let translatedRes = await res.json();
-          const translatedMessage = {
-            message: translatedRes.translatedText,
-            messageLang: localSelf.userLang,
-            messageRoom: localSelf.userRoom,
-            messageUser: message.messageUser,
-            messageType: message.messageType,
-          };
-          dispatch(addNewMessage(translatedMessage));
-        } else {
-          console.log('Message does not need translation');
-          dispatch(addNewMessage(message));
+      if (message.messageLang !== localSelf.userLang) {
+        const res = await fetch('https://libretranslate.de/translate', {
+          method: 'POST',
+          body: JSON.stringify({
+            q: message.message,
+            source: message.messageLang,
+            target: localSelf.userLang,
+            format: 'text',
+          }),
+          headers: { 'Content-Type': 'application/json' },
+        });
+        let translatedRes = await res.json();
+        let assignedType = 'roommate';
+        if (message.messageType === 'admin') {
+          assignedType = 'admin';
         }
+        const translatedMessage = {
+          message: translatedRes.translatedText,
+          messageLang: localSelf.userLang,
+          messageRoom: localSelf.userRoom,
+          messageUser: message.messageUser,
+          messageType: assignedType,
+        };
+        dispatch(addNewMessage(translatedMessage));
       } else {
-        console.log('Sorry, message belongs in a different room.');
+        console.log('Message does not need translation');
+        dispatch(addNewMessage(message));
       }
     } catch (error) {
       console.log(error);
@@ -110,6 +121,8 @@ const reducer = (state = initialState, action) => {
       return { ...state, self: action.self };
     case ADD_USER_TO_LIST:
       return { ...state, users: [...state.users, action.user] };
+    case SET_USERS:
+      return { ...state, users: action.users };
     default:
       return state;
   }

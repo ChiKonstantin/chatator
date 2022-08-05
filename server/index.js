@@ -7,7 +7,7 @@ const bodyParser = require('body-parser');
 const router = require('./apiRoutes');
 // const { getLangName } = require('../support/utils');
 // const getLangName = require('../client/support/utils');
-
+const { userArr, addUser, removeUser } = require('./db/usersStorage');
 //listening to server PORT
 const server = app.listen(8080, function () {
   console.log(`Listening to port`);
@@ -17,23 +17,30 @@ const server = app.listen(8080, function () {
 const socket = require('socket.io');
 const serverSocket = socket(server);
 
+//tracking socket.id by userId
+
 serverSocket.on('connection', (socket) => {
   console.log(`Connection from client ${socket.id}`);
   socket.on('join-room', (user) => {
     socket.join(user.userRoom);
-    //add socket.id to user's self properties
-    serverSocket.in(user.userRoom).emit('add-user-to-room', {
+    //!!!! create a formula to strip userArr off of socket.ids
+    serverSocket.in(user.userRoom).emit('check-who-is-in-room', userArr);
+    const userWithSocket = {
       ...user,
-      userSocketId: socket.id,
-    });
+      socketId: socket.id,
+    };
+    addUser(userWithSocket);
+
+    serverSocket.in(user.userRoom).emit('add-user-to-room', userWithSocket);
     socket.broadcast.to(user.userRoom).emit('new-message', {
-      message: `${user.userName} joined the room, they speak ${user.userLangName}!`,
+      message: `📢 ${user.userName} joined the room, they speak ${user.userLangName}!`,
       messageLang: 'en',
       messageRoom: user.userRoom,
-      messageUser: '📢',
+      messageUser: '',
       messageType: 'admin',
     });
   });
+
   socket.on('new-message', (message) => {
     socket.broadcast.to(message.messageRoom).emit('new-message', message);
   });
