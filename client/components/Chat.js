@@ -6,14 +6,15 @@ import { useSelector, useDispatch } from 'react-redux';
 import { postMessage, setSelf, joinedRoomNotify } from '../store';
 import { languages } from '../support/langList';
 import UsersList from './UsersList';
-import { checkRoomStatus } from '../clientSocket';
 
 export default function Chat() {
   const dispatch = useDispatch();
   const [values, setValues] = useState({});
+  const [{ newMessage }, setMessage] = useState({});
   const messages = useSelector((state) => state.messages);
   const self = useSelector((state) => state.self);
   const users = useSelector((state) => state.users);
+  const typingStatus = useSelector((state) => state.typingStatus);
 
   //Handling form input
   const handleChange = (event) => {
@@ -21,6 +22,18 @@ export default function Chat() {
     setValues((state) => ({
       ...state,
       [event.target.name]: event.target.value,
+    }));
+  };
+
+  //Handling message typing
+  const handleTypingMessage = (event) => {
+    event.persist();
+    clientSocket.emit('typing-message', {
+      userName: self.userName,
+      userRoom: self.userRoom,
+    });
+    setMessage(() => ({
+      newMessage: event.target.value,
     }));
   };
 
@@ -55,7 +68,6 @@ export default function Chat() {
     //joining room is basically setSelf and emit event to join room
 
     clientSocket.on('check-room-response', (response) => {
-      console.log('**************', response);
       if (response === 1) {
         const randomUserId = Math.floor(Math.random() * 100000);
         const [langName] = languages.filter(
@@ -72,7 +84,8 @@ export default function Chat() {
         dispatch(setSelf(selfInfo));
         clientSocket.emit('join-room', selfInfo);
       } else {
-        console.log('Sorry, there is no such room. Please try again.');
+        console.log('Sorry, there is no such room...');
+        alert('Sorry, there is no such room...');
       }
     });
   };
@@ -91,7 +104,7 @@ export default function Chat() {
       };
       // sendMessage(newMessage);
       dispatch(postMessage(newMessage));
-      setValues({});
+      setMessage({});
     }
   };
 
@@ -110,6 +123,25 @@ export default function Chat() {
       return users.map((user) => <UsersList user={user} />);
     }
   };
+  const copyCode = function () {
+    navigator.clipboard.writeText(self.userRoom);
+    alert('Copied room code!');
+  };
+
+  const copyLink = function () {
+    navigator.clipboard.writeText(
+      `http://localhost:8080/join/${self.userRoom}`
+    );
+    alert('Link to this room copied to clipboard!');
+  };
+
+  const rednerTypingStatus = function () {
+    if (typingStatus.typing === undefined || typingStatus.typing === false) {
+      return '...';
+    } else {
+      return `${typingStatus.userName} is typing...`;
+    }
+  };
 
   return (
     <div className='chat-room'>
@@ -121,24 +153,26 @@ export default function Chat() {
             <h3>
               Your name is {self.userName}
               <br /> Your room code is: {self.userRoom}
+              <button onClick={copyCode}>Copy code</button>
+              <br /> <button onClick={copyLink}>Link to Room</button>
               <br /> And your language is: {self.userLangName}
               <br />
             </h3>
           </div>
           <div>Users in the room:</div>
           <ul className='users-wrapper'>{renderUsers(users)}</ul>
-          <div>---</div>
+          <div>{rednerTypingStatus()}</div>
 
           <form
-            onSubmit={(event) => handleSendMessage(values.newMessage, event)}
+            onSubmit={(event) => handleSendMessage(newMessage, event)}
             className='chat-form'
           >
             <input
               type='text'
               id='entry'
               name='newMessage'
-              value={values.newMessage || ''}
-              onChange={handleChange}
+              value={newMessage || ''}
+              onChange={handleTypingMessage}
               placeholder='Message here'
             />
             <button type='submit'>send</button>

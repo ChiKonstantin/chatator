@@ -21,7 +21,7 @@ const server = app.listen(8080, function () {
 
 //socket connection to server
 const socket = require('socket.io');
-const { emit } = require('process');
+// const { emit } = require('process');
 const serverSocket = socket(server);
 
 //tracking socket.id by userId
@@ -67,12 +67,16 @@ serverSocket.on('connection', (socket) => {
   //   socket.to(userRoom).emit('message', customMessageWithUserName);
   // });
 
+  socket.on('typing-message', (user) => {
+    socket.broadcast.to(user.userRoom).emit('typing-message', user.userName);
+  });
+
   socket.on('disconnect', () => {
     console.log('SOMEONE LEFT', socket.id);
     const departedUser = removeAndFetchDepartedUser(socket.id);
     if (departedUser !== undefined) {
       socket.broadcast.to(departedUser.userRoom).emit('new-message', {
-        message: `📢 ${departedUser.userName} left the room.`,
+        message: `${departedUser.userName} left the room.`,
         messageLang: 'en',
         messageRoom: departedUser.userRoom,
         messageUser: '',

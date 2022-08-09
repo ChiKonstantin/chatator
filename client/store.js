@@ -8,6 +8,7 @@ const ADD_NEW_MESSAGE = 'ADD_NEW_MESSAGE';
 const SET_SELF = 'SET_SELF';
 const ADD_USER_TO_LIST = 'ADD_USER_TO_LIST';
 const SET_USERS = 'SET_USERS';
+const SET_TYPING_STATUS = 'SET_TYPING_STATUS';
 
 export const addNewMessage = function (message) {
   console.log('ADDING NEW MESSAGE:', message);
@@ -16,8 +17,8 @@ export const addNewMessage = function (message) {
     message,
   };
 };
-let localSelf = {};
 
+let localSelf = {};
 export const setSelf = function (self) {
   localSelf = self;
   return {
@@ -39,6 +40,14 @@ export const setUsers = function (users) {
   return {
     type: SET_USERS,
     users,
+  };
+};
+
+export const setTypingStatus = function (status) {
+  // console.log('SETTING TYPING STATUS', status);
+  return {
+    type: SET_TYPING_STATUS,
+    status,
   };
 };
 
@@ -91,26 +100,39 @@ export const translateMessage = (message) => {
   };
 };
 
-// export const joinedRoomNotify = function () {
-//   const [langName] = languages.filter(
-//     (lang) => lang.code === localSelf.userLang
-//   );
-//   console.log('LANG NAME:', langName);
-//   const joinedMessage = {
-//     message: `${localSelf.userName} joined this room, they speak ${langName.name}.`,
-//     messageLang: 'en',
-//     messageRoom: localSelf.userRoom,
-//     messageUser: '📢',
-//     messageType: 'admin',
-//   };
-//   clientSocket.emit(`new-message`, joinedMessage);
-// };
+let timer;
+export const notifyOfTyping = function (userName) {
+  return function (dispatch) {
+    try {
+      clearTimeout(timer);
+
+      dispatch(
+        setTypingStatus({
+          typing: true,
+          userName: userName,
+        })
+      );
+
+      timer = setTimeout(() => {
+        dispatch(
+          setTypingStatus({
+            typing: false,
+            userName: '',
+          })
+        );
+      }, 500);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
 
 const initialState = {
   //the messages should be in current user's language
   messages: [],
   self: { isInRoom: false },
   users: [],
+  typingStatus: { typing: false, userName: '' },
 };
 
 const reducer = (state = initialState, action) => {
@@ -123,6 +145,8 @@ const reducer = (state = initialState, action) => {
       return { ...state, users: [...state.users, action.user] };
     case SET_USERS:
       return { ...state, users: action.users };
+    case SET_TYPING_STATUS:
+      return { ...state, typingStatus: action.status };
     default:
       return state;
   }

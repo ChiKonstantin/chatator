@@ -15,9 +15,8 @@ const container = document.getElementById('app');
 const root = createRoot(container);
 root.render(
   <Provider store={store}>
-    {/* <BrowserRouter history={history}>
-     <Main />
-  </BrowserRouter> */}
-    <Chat />
+    <BrowserRouter history={history}>
+      <Main />
+    </BrowserRouter>
   </Provider>
 );
