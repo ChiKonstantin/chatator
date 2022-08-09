@@ -43,7 +43,7 @@ serverSocket.on('connection', (socket) => {
     addUser(userWithSocket);
     serverSocket.in(user.userRoom).emit('add-user-to-room', userWithSocket);
     socket.broadcast.to(user.userRoom).emit('new-message', {
-      message: `📢 ${user.userName} joined the room, they speak ${user.userLangName}!`,
+      message: `🥔 ${user.userName} joined the room, they speak ${user.userLangName}!`,
       messageLang: 'en',
       messageRoom: user.userRoom,
       messageUser: '',
@@ -76,7 +76,7 @@ serverSocket.on('connection', (socket) => {
     const departedUser = removeAndFetchDepartedUser(socket.id);
     if (departedUser !== undefined) {
       socket.broadcast.to(departedUser.userRoom).emit('new-message', {
-        message: `${departedUser.userName} left the room.`,
+        message: `🥔 ${departedUser.userName} left the room.`,
         messageLang: 'en',
         messageRoom: departedUser.userRoom,
         messageUser: '',

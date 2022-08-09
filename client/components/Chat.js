@@ -139,7 +139,7 @@ export default function Chat() {
     if (typingStatus.typing === undefined || typingStatus.typing === false) {
       return '...';
     } else {
-      return `${typingStatus.userName} is typing...`;
+      return `⌨️ ${typingStatus.userName} is typing...`;
     }
   };
 

@@ -88,6 +88,8 @@ export const translateMessage = (message) => {
           messageRoom: localSelf.userRoom,
           messageUser: message.messageUser,
           messageType: assignedType,
+          messageOriginal: message.message,
+          messageOriginalLang: message.messageLang,
         };
         dispatch(addNewMessage(translatedMessage));
       } else {
