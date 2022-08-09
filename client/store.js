@@ -12,6 +12,7 @@ const SET_TYPING_STATUS = 'SET_TYPING_STATUS';
 
 export const addNewMessage = function (message) {
   console.log('ADDING NEW MESSAGE:', message);
+
   return {
     type: ADD_NEW_MESSAGE,
     message,

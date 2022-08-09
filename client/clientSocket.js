@@ -19,10 +19,18 @@ clientSocket.on('connect', () => {
     store.dispatch(notifyOfTyping(userName));
   });
   clientSocket.on('new-message', (message) => {
+    const soundMessage = new Audio(
+      'https://cdn.freesound.org/previews/66/66876_874154-lq.mp3'
+    );
+    soundMessage.play();
     // console.log('clientSocket received new-message event', message);
     store.dispatch(translateMessage(message));
   });
   clientSocket.on('add-user-to-room', (user) => {
+    const soundUserIn = new Audio(
+      'https://cdn.freesound.org/previews/573/573381_12342220-lq.mp3'
+    );
+    soundUserIn.play();
     // console.log('USER WITH SOCKET ID: ', user);
     store.dispatch(addUserToList(user));
   });

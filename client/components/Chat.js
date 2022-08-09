@@ -55,8 +55,6 @@ export default function Chat() {
     };
     dispatch(setSelf(selfInfo));
     clientSocket.emit('join-room', selfInfo);
-    // joinedRoomNotify();
-    // add a function to check who is in the room
   };
 
   const handleJoinRoom = function (event) {
@@ -66,7 +64,6 @@ export default function Chat() {
     //if not give an error
     //if roomCode exists then join the room
     //joining room is basically setSelf and emit event to join room
-
     clientSocket.on('check-room-response', (response) => {
       if (response === 1) {
         const randomUserId = Math.floor(Math.random() * 100000);
@@ -92,6 +89,7 @@ export default function Chat() {
 
   const handleSendMessage = function (message, event) {
     event.preventDefault();
+
     if (message === '' || message === undefined) {
       console.log('Cannot send an empty message, sorry.');
     } else {
@@ -102,8 +100,10 @@ export default function Chat() {
         messageUser: self.userName,
         messageType: 'self',
       };
-      // sendMessage(newMessage);
       dispatch(postMessage(newMessage));
+      if (users.length < 2) {
+        console.log('NOONE ELSE IN THIS ROOM!');
+      }
       setMessage({});
     }
   };
