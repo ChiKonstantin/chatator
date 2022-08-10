@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { clientSocket } from '../clientSocket';
 import { setSelf } from '../store';
 import { useNavigate } from 'react-router-dom';
+import { playSound } from '../support/playSound';
 
 export default function JoinWLink() {
   const dispatch = useDispatch();
@@ -33,7 +34,7 @@ export default function JoinWLink() {
   const handleJoinRoomWLink = function (event) {
     event.preventDefault();
 
-    clientSocket.emit('check-room-code', getRoomCodeFromUrl());
+    clientSocket.emit('check-room', getRoomCodeFromUrl());
     //check if roomCode exists
     //if not give an error
     //if roomCode exists then join the room
@@ -56,6 +57,7 @@ export default function JoinWLink() {
         dispatch(setSelf(selfInfo));
         clientSocket.emit('join-room', selfInfo);
         navigate('/');
+        playSound('welcome');
       } else {
         console.log('Sorry, there is no such room...');
         alert('Sorry, there is no such room...');

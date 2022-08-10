@@ -1,21 +1,30 @@
 import { applyMiddleware, createStore } from 'redux';
 import thunkMiddleware from 'redux-thunk';
-import axios from 'axios';
 import { clientSocket } from './clientSocket';
-import { languages } from './support/langList';
+import { playSound } from './support/playSound';
 
 const ADD_NEW_MESSAGE = 'ADD_NEW_MESSAGE';
 const SET_SELF = 'SET_SELF';
 const ADD_USER_TO_LIST = 'ADD_USER_TO_LIST';
 const SET_USERS = 'SET_USERS';
 const SET_TYPING_STATUS = 'SET_TYPING_STATUS';
+const TOGGLE_SOUND = 'TOGGLE_SOUND';
 
 export const addNewMessage = function (message) {
-  console.log('ADDING NEW MESSAGE:', message);
+  playSound(message.messageType);
+  let messageToAdd;
+  if (message.messageType === 'admin') {
+    messageToAdd = {
+      ...message,
+      message: `🥔 ${message.adminMessageSubject} ${message.message}`,
+    };
+  } else {
+    messageToAdd = { ...message };
+  }
 
   return {
     type: ADD_NEW_MESSAGE,
-    message,
+    messageToAdd,
   };
 };
 
@@ -52,9 +61,15 @@ export const setTypingStatus = function (status) {
   };
 };
 
+export const toggleSound = function () {
+  return {
+    type: TOGGLE_SOUND,
+  };
+};
+
 //posts Self message in Self view, sends message to recipient for translation.
 export const postMessage = function (message) {
-  return async function (dispatch) {
+  return function (dispatch) {
     try {
       dispatch(addNewMessage(message));
       clientSocket.emit(`new-message`, message);
@@ -67,6 +82,10 @@ export const postMessage = function (message) {
 export const translateMessage = (message) => {
   return async function (dispatch) {
     try {
+      let assignedType = 'roommate';
+      if (message.messageType === 'admin') {
+        assignedType = 'admin';
+      }
       if (message.messageLang !== localSelf.userLang) {
         const res = await fetch('https://libretranslate.de/translate', {
           method: 'POST',
@@ -79,11 +98,10 @@ export const translateMessage = (message) => {
           headers: { 'Content-Type': 'application/json' },
         });
         let translatedRes = await res.json();
-        let assignedType = 'roommate';
-        if (message.messageType === 'admin') {
-          assignedType = 'admin';
-        }
+
         const translatedMessage = {
+          ...message,
+          adminMessageSubject: message.adminMessageSubject,
           message: translatedRes.translatedText,
           messageLang: localSelf.userLang,
           messageRoom: localSelf.userRoom,
@@ -95,7 +113,7 @@ export const translateMessage = (message) => {
         dispatch(addNewMessage(translatedMessage));
       } else {
         console.log('Message does not need translation');
-        dispatch(addNewMessage(message));
+        dispatch(addNewMessage({ ...message, messageType: assignedType }));
       }
     } catch (error) {
       console.log(error);
@@ -136,12 +154,13 @@ const initialState = {
   self: { isInRoom: false },
   users: [],
   typingStatus: { typing: false, userName: '' },
+  sound: true,
 };
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_NEW_MESSAGE:
-      return { ...state, messages: [...state.messages, action.message] };
+      return { ...state, messages: [...state.messages, action.messageToAdd] };
     case SET_SELF:
       return { ...state, self: action.self };
     case ADD_USER_TO_LIST:
@@ -150,6 +169,8 @@ const reducer = (state = initialState, action) => {
       return { ...state, users: action.users };
     case SET_TYPING_STATUS:
       return { ...state, typingStatus: action.status };
+    case TOGGLE_SOUND:
+      return { ...state, sound: !state.sound };
     default:
       return state;
   }

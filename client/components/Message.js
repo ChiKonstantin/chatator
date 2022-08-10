@@ -5,6 +5,7 @@ export default function Message(props) {
   const [showFlag, setShowFlag] = useState({
     show: false,
   });
+  const testName = 'TEST NAME';
 
   const originalSwitch = function () {
     setShowFlag({ show: !showFlag.show });

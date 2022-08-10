@@ -3,9 +3,16 @@ import React, { useState } from 'react';
 import Message from './Message';
 import { clientSocket } from '../clientSocket';
 import { useSelector, useDispatch } from 'react-redux';
-import { postMessage, setSelf, joinedRoomNotify } from '../store';
+import {
+  addNewMessage,
+  postMessage,
+  setSelf,
+  toggleSound,
+  translateMessage,
+} from '../store';
 import { languages } from '../support/langList';
 import UsersList from './UsersList';
+import { playSound } from '../support/playSound';
 
 export default function Chat() {
   const dispatch = useDispatch();
@@ -15,6 +22,7 @@ export default function Chat() {
   const self = useSelector((state) => state.self);
   const users = useSelector((state) => state.users);
   const typingStatus = useSelector((state) => state.typingStatus);
+  const sound = useSelector((state) => state.sound);
 
   //Handling form input
   const handleChange = (event) => {
@@ -55,11 +63,12 @@ export default function Chat() {
     };
     dispatch(setSelf(selfInfo));
     clientSocket.emit('join-room', selfInfo);
+    playSound('welcome');
   };
 
   const handleJoinRoom = function (event) {
     event.preventDefault();
-    clientSocket.emit('check-room-code', values.joinUserRoom);
+    clientSocket.emit('check-room', values.joinUserRoom);
     //check if roomCode exists
     //if not give an error
     //if roomCode exists then join the room
@@ -80,8 +89,8 @@ export default function Chat() {
         };
         dispatch(setSelf(selfInfo));
         clientSocket.emit('join-room', selfInfo);
+        playSound('welcome');
       } else {
-        console.log('Sorry, there is no such room...');
         alert('Sorry, there is no such room...');
       }
     });
@@ -102,6 +111,14 @@ export default function Chat() {
       };
       dispatch(postMessage(newMessage));
       if (users.length < 2) {
+        const emptyRoomMessage = {
+          message: `You are messaging to an empty room...`,
+          messageLang: 'en',
+          messageRoom: self.userRoom,
+          messageUser: '',
+          messageType: 'admin',
+        };
+        dispatch(translateMessage(emptyRoomMessage));
         console.log('NOONE ELSE IN THIS ROOM!');
       }
       setMessage({});
@@ -143,11 +160,32 @@ export default function Chat() {
     }
   };
 
+  const toggleSoundButton = function () {
+    dispatch(toggleSound());
+  };
+
+  const renderSoundButton = function () {
+    if (sound) {
+      return 'Sound is on';
+    } else {
+      return 'Sound is off';
+    }
+  };
+
+  const renderSendButton = function (message) {
+    if (message === '' || message === undefined) {
+      return 'send (grey)';
+    } else {
+      return 'send';
+    }
+  };
+
   return (
     <div className='chat-room'>
       {self.isInRoom ? (
         <div className='room-comp'>
           <div>
+            <button onClick={toggleSoundButton}>{renderSoundButton()}</button>
             <h1>Welcome, {self.userName}!</h1>
             <h2>Here's some info about you:</h2>
             <h3>
@@ -175,7 +213,7 @@ export default function Chat() {
               onChange={handleTypingMessage}
               placeholder='Message here'
             />
-            <button type='submit'>send</button>
+            <button type='submit'>{renderSendButton(newMessage)}</button>
           </form>
 
           <div className='messages-wrapper'>{renderMessages(messages)}</div>
@@ -201,6 +239,9 @@ export default function Chat() {
               value={values.newUserLang || ''}
               placeholder='Language'
             >
+              <option value='none' selected disabled hidden>
+                Select an Option
+              </option>
               {languages.map((language) => (
                 <option value={language.code} key={`lang_${language.code}`}>
                   {language.name}

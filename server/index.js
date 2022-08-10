@@ -31,27 +31,31 @@ serverSocket.on('connection', (socket) => {
   console.log('THIS IS CONENTS OF USER ARRAY, FYI: ', userArr);
   socket.on('join-room', (user) => {
     socket.join(user.userRoom);
-    //!!!! create a formula to strip userArr off of socket.ids
-    serverSocket
-      .in(user.userRoom)
-      .emit('check-who-is-in-room', fetchUsersInRoom(user));
+    //adding socket info to user object
     const userWithSocket = {
       ...user,
       socketId: socket.id,
     };
-    // console.log('USER W SOCKET', userWithSocket);
+    //adding user object to list
     addUser(userWithSocket);
-    serverSocket.in(user.userRoom).emit('add-user-to-room', userWithSocket);
-    socket.broadcast.to(user.userRoom).emit('new-message', {
-      message: `🥔 ${user.userName} joined the room, they speak ${user.userLangName}!`,
+    //sending list of all users in room to all users in room
+    serverSocket
+      .in(user.userRoom)
+      .emit('check-who-is-in-room', fetchUsersInRoom(user));
+    //sending admin-message to all users in room (except self) that new user joined
+    const newUserMessage = {
+      message: `joined the room, they speak ${user.userLangName}!`,
       messageLang: 'en',
       messageRoom: user.userRoom,
       messageUser: '',
       messageType: 'admin',
-    });
+      adminMessageSubject: user.userName,
+    };
+    console.log('NEW USER MESSAGE', newUserMessage);
+    socket.broadcast.to(user.userRoom).emit('new-message', newUserMessage);
   });
 
-  socket.on('check-room-code', (userRoomCode) => {
+  socket.on('check-room', (userRoomCode) => {
     //formula should check the room code.
     const response = checkRoomCode(userRoomCode);
     serverSocket.to(socket.id).emit('check-room-response', response);
@@ -76,11 +80,12 @@ serverSocket.on('connection', (socket) => {
     const departedUser = removeAndFetchDepartedUser(socket.id);
     if (departedUser !== undefined) {
       socket.broadcast.to(departedUser.userRoom).emit('new-message', {
-        message: `🥔 ${departedUser.userName} left the room.`,
+        message: `left the room.`,
         messageLang: 'en',
         messageRoom: departedUser.userRoom,
         messageUser: '',
         messageType: 'admin',
+        adminMessageSubject: departedUser.userName,
       });
       serverSocket
         .in(departedUser.userRoom)
