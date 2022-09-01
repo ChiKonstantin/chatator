@@ -4,7 +4,7 @@ const app = express();
 const path = require('path'); // Node's path module
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
-const router = require('./apiRoutes');
+// const router = require('./apiRoutes');
 // const { getLangName } = require('../support/utils');
 // const getLangName = require('../client/support/utils');
 const {
@@ -110,7 +110,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(express.urlencoded({ extended: true }));
 
 //mounting all api routes on /api - other routes collected from index.js in apiRoutes
-app.use('/api', router);
+// app.use('/api', router);
 
 //Index HTML dispatch:
 // sends index.html for any requests that don't match one of our API routes.
