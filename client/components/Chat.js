@@ -117,7 +117,7 @@ export default function Chat() {
           messageRoom: self.userRoom,
           messageUser: '',
           messageType: 'admin',
-          adminMessageSubject: self.userName
+          adminMessageSubject: ''
         };
         dispatch(translateMessage(emptyRoomMessage));
         console.log('NOONE ELSE IN THIS ROOM!');
