@@ -144,7 +144,7 @@ export default function Chat() {
     navigator.clipboard.writeText(self.userRoom);
     alert('Copied room code!');
   };
-
+  //need to update the link - modularize
   const copyLink = function () {
     navigator.clipboard.writeText(
       `http://localhost:8080/join/${self.userRoom}`

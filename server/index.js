@@ -1,5 +1,6 @@
 //CHATATOR
 const express = require('express');
+const PORT = process.env.PORT || 8080;
 const app = express();
 const path = require('path'); // Node's path module
 const morgan = require('morgan');
@@ -15,9 +16,9 @@ const {
   fetchUsersInRoom,
 } = require('./db/usersStorage');
 //listening to server PORT
-const server = app.listen(8080, function () {
-  console.log(`Listening to port`);
-});
+const server = app.listen(PORT, () =>
+      console.log(`Listening to port ${PORT}`)
+    );
 
 //socket connection to server
 const socket = require('socket.io');
