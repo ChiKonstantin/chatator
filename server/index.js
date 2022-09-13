@@ -115,7 +115,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 //Index HTML dispatch:
 // sends index.html for any requests that don't match one of our API routes.
-app.get('*', function (req, res) {
+app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
