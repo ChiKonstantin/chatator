@@ -8,7 +8,7 @@ import { playSound } from '../support/playSound';
 
 export default function JoinWLink() {
   const dispatch = useDispatch();
-  const [values, setValues] = useState({});
+  const [values, setValues] = useState({joinUserLang: 'en'});
   const self = useSelector((state) => state.self);
   let navigate = useNavigate();
 

@@ -243,9 +243,7 @@ export default function Chat() {
               value={values.newUserLang || ''}
               placeholder='Language'
             >
-              <option value='none' hidden>
-                Your Language
-              </option>
+
               {languages.map((language) => (
                 <option value={language.code} key={`lang_${language.code}`}>
                   {language.name}
@@ -277,7 +275,7 @@ export default function Chat() {
               onChange={handleChange}
               value={values.joinUserLang || ''}
             >
-              <option value='en' key='lang_en' disabled>Your Language</option>
+
               {languages.map((language) => (
                 <option value={language.code} key={`lang_${language.code}`}>
                   {language.name}
