@@ -16,13 +16,15 @@ import { playSound } from '../support/playSound';
 
 export default function Chat() {
   const dispatch = useDispatch();
-  const [values, setValues] = useState({});
+  const [values, setValues] = useState({joinUserLang: 'en', newUserLang: 'en'});
   const [{ newMessage }, setMessage] = useState({});
   const messages = useSelector((state) => state.messages);
   const self = useSelector((state) => state.self);
   const users = useSelector((state) => state.users);
   const typingStatus = useSelector((state) => state.typingStatus);
   const sound = useSelector((state) => state.sound);
+
+    console.log('VALUES: ', values)
 
   //Handling form input
   const handleChange = (event) => {
@@ -31,6 +33,7 @@ export default function Chat() {
       ...state,
       [event.target.name]: event.target.value,
     }));
+
   };
 
   //Handling message typing
@@ -148,7 +151,7 @@ export default function Chat() {
   //need to update the link - modularize
   const copyLink = function () {
     navigator.clipboard.writeText(
-      `http://localhost:8080/join/${self.userRoom}`
+      `https://chatator.herokuapp.com/join/${self.userRoom}`
     );
     alert('Link to this room copied to clipboard!');
   };
@@ -240,8 +243,8 @@ export default function Chat() {
               value={values.newUserLang || ''}
               placeholder='Language'
             >
-              <option value='none' selected disabled hidden>
-                Select an Option
+              <option value='none' hidden>
+                Your Language
               </option>
               {languages.map((language) => (
                 <option value={language.code} key={`lang_${language.code}`}>
@@ -273,8 +276,8 @@ export default function Chat() {
               name='joinUserLang'
               onChange={handleChange}
               value={values.joinUserLang || ''}
-              placeholder='Language'
             >
+              <option value='en' key='lang_en' disabled>Your Language</option>
               {languages.map((language) => (
                 <option value={language.code} key={`lang_${language.code}`}>
                   {language.name}
