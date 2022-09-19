@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 // import { clientSocket } from '../clientSocket';
+import {TiArrowUpThick} from 'react-icons/ti'
 import Message from './Message';
 import { clientSocket } from '../clientSocket';
 import { useSelector, useDispatch } from 'react-redux';
@@ -23,8 +24,6 @@ export default function Chat() {
   const users = useSelector((state) => state.users);
   const typingStatus = useSelector((state) => state.typingStatus);
   const sound = useSelector((state) => state.sound);
-
-    console.log('VALUES: ', values)
 
   //Handling form input
   const handleChange = (event) => {
@@ -123,7 +122,7 @@ export default function Chat() {
           adminMessageSubject: ''
         };
         dispatch(translateMessage(emptyRoomMessage));
-        console.log('NOONE ELSE IN THIS ROOM!');
+        // console.log('NOONE ELSE IN THIS ROOM!');
       }
       setMessage({});
     }
@@ -178,16 +177,17 @@ export default function Chat() {
 
   const renderSendButton = function (message) {
     if (message === '' || message === undefined) {
-      return 'send (grey)';
+      return <button className='message-button-inactive' type='submit'> <TiArrowUpThick/> </button>;
     } else {
-      return 'send';
+      return <button className='message-button' type='submit'> <TiArrowUpThick/> </button>;
     }
   };
 
   return (
-    <div className='chat-room'>
+    // Actual chat room:
+    <div>
       {self.isInRoom ? (
-        <div className='room-comp'>
+        <div className='chat-room'>
           <div>
             <button onClick={toggleSoundButton}>{renderSoundButton()}</button>
             <h1>Welcome, {self.userName}!</h1>
@@ -203,6 +203,7 @@ export default function Chat() {
           </div>
           <div>Users in the room:</div>
           <ul className='users-wrapper'>{renderUsers(users)}</ul>
+          <div className='messages-wrapper'>{renderMessages(messages)}</div>
           <div>{rednerTypingStatus()}</div>
 
           <form
@@ -217,16 +218,17 @@ export default function Chat() {
               onChange={handleTypingMessage}
               placeholder='Message here'
             />
-            <button type='submit'>{renderSendButton(newMessage)}</button>
+            {/* <button className='message-button' type='submit'>{renderSendButton(newMessage)}</button> */}
+             {renderSendButton(newMessage)}
           </form>
 
-          <div className='messages-wrapper'>{renderMessages(messages)}</div>
         </div>
       ) : (
+      // Create-Room and Join-Room forms
         <div className='waiting-room'>
-          <h3>🥔 CREATE NEW ROOM!</h3>
+          <div className='headline'>🥔 CREATE NEW ROOM</div>
           <form
-            className='create-room-form'
+            className='form'
             onSubmit={handleCreateRoom}
             key='create-room-form'
           >
@@ -251,12 +253,12 @@ export default function Chat() {
               ))}
             </select>
             <button className='submit-button' type='submit'>
-              CREATE ROOM
+              Create Room
             </button>
           </form>
-          <h4>or</h4>
-          <h3>🥔+🥔 JOIN EXISTING ROOM!</h3>
-          <form className='join-form' onSubmit={handleJoinRoom} key='join-form'>
+          <div className='headline'>or</div>
+          <div className='headline'>🥔+🥔 JOIN EXISTING ROOM</div>
+          <form className='form' onSubmit={handleJoinRoom} key='join-form'>
             <input
               name='joinUserRoom'
               onChange={handleChange}
@@ -283,7 +285,7 @@ export default function Chat() {
               ))}
             </select>
             <button className='submit-button' type='submit'>
-              JOIN ROOM
+              Join Room
             </button>
           </form>
         </div>

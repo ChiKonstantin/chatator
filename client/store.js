@@ -38,7 +38,7 @@ export const setSelf = function (self) {
 };
 
 export const addUserToList = function (user) {
-  console.log('ADDING NEW USER:', user);
+  // console.log('ADDING NEW USER:', user);
   return {
     type: ADD_USER_TO_LIST,
     user,
@@ -46,7 +46,7 @@ export const addUserToList = function (user) {
 };
 
 export const setUsers = function (users) {
-  console.log('SETTING USERS', users);
+  // console.log('SETTING USERS', users);
   return {
     type: SET_USERS,
     users,
@@ -112,7 +112,7 @@ export const translateMessage = (message) => {
         };
         dispatch(addNewMessage(translatedMessage));
       } else {
-        console.log('Message does not need translation');
+        // console.log('Message does not need translation');
         dispatch(addNewMessage({ ...message, messageType: assignedType }));
       }
     } catch (error) {

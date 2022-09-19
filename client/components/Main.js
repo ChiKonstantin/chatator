@@ -1,6 +1,5 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
-import JoinRoom from './JoinRoom';
 import Room from './Room';
 import JoinWLink from './JoinWLink';
 import Chat from './Chat';

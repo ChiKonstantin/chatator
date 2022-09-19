@@ -15,7 +15,7 @@ export const playSound = function (type) {
       'https://cdn.freesound.org/previews/573/573381_12342220-lq.mp3'
     );
 
-    console.log('sound type:', type);
+    // console.log('sound type:', type);
     if (type === 'admin') {
       adminMessageSound.play();
     }
@@ -31,6 +31,6 @@ export const playSound = function (type) {
       joinChatSound.play();
     }
   } else {
-    console.log('Sound is off...');
+    // console.log('Sound is off...');
   }
 };

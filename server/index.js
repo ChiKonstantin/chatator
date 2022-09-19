@@ -28,8 +28,8 @@ const serverSocket = socket(server);
 //tracking socket.id by userId
 
 serverSocket.on('connection', (socket) => {
-  console.log(`Connection from client ${socket.id}`);
-  console.log('THIS IS CONENTS OF USER ARRAY, FYI: ', userArr);
+  // console.log(`Connection from client ${socket.id}`);
+  // console.log('THIS IS CONENTS OF USER ARRAY, FYI: ', userArr);
   socket.on('join-room', (user) => {
     socket.join(user.userRoom);
     //adding socket info to user object
@@ -52,7 +52,7 @@ serverSocket.on('connection', (socket) => {
       messageType: 'admin',
       adminMessageSubject: user.userName,
     };
-    console.log('NEW USER MESSAGE', newUserMessage);
+    // console.log('NEW USER MESSAGE', newUserMessage);
     socket.broadcast.to(user.userRoom).emit('new-message', newUserMessage);
   });
 
@@ -77,7 +77,7 @@ serverSocket.on('connection', (socket) => {
   });
 
   socket.on('disconnect', () => {
-    console.log('SOMEONE LEFT', socket.id);
+    // console.log('SOMEONE LEFT', socket.id);
     const departedUser = removeAndFetchDepartedUser(socket.id);
     if (departedUser !== undefined) {
       socket.broadcast.to(departedUser.userRoom).emit('new-message', {

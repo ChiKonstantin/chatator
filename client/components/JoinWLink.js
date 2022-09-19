@@ -65,10 +65,10 @@ export default function JoinWLink() {
     });
   };
   return (
-    <div>
-      <h3>🥔+🥔 JOIN ROOM {getRoomCodeFromUrl()}!</h3>
+    <div className='waiting-room'>
+      <div className='headline'>🥔+🥔 JOIN ROOM {getRoomCodeFromUrl()}</div>
       <form
-        className='join-form'
+        className='form'
         onSubmit={handleJoinRoomWLink}
         key='join-form'
       >
@@ -98,7 +98,7 @@ export default function JoinWLink() {
           ))}
         </select>
         <button className='submit-button' type='submit'>
-          JOIN ROOM
+          Join Room
         </button>
       </form>
     </div>

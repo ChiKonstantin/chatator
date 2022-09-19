@@ -2,7 +2,7 @@ let userArr = [];
 
 const addUser = function (user) {
   userArr.push(user);
-  console.log('THIS IS USER ARRAY ON SERVER:', userArr);
+  // console.log('THIS IS USER ARRAY ON SERVER:', userArr);
 };
 const checkRoomCode = function (roomCode) {
   const usersInRoom = userArr.filter((user) => user.userRoom === roomCode);
@@ -20,7 +20,7 @@ const removeAndFetchDepartedUser = function (id) {
   const indexOfUser = userArr.indexOf(userToRemove);
   if (indexOfUser > -1) {
     const [removedUser] = userArr.splice(indexOfUser, 1);
-    console.log('DEPARTED USER IN userStorage: ', removedUser);
+    // console.log('DEPARTED USER IN userStorage: ', removedUser);
     return removedUser;
   } else {
     console.log('No user with this id was found');

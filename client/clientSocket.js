@@ -14,6 +14,7 @@ export let returnRoomStatus;
 clientSocket.on('connect', () => {
   //promt that the socket is connected
   console.log('Client socket connected to server!');
+  
   //listening for emmited events which trigger function execution:
 
   clientSocket.on('typing-message', (userName) => {
