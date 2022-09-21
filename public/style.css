@@ -140,10 +140,11 @@ select {
 	position: fixed;
 	background-color: rgba(123, 93, 119, 0.308);
 	width: 100%;
-	padding: 5px 5px 5px 15px;
+	padding: 5px 5px 5px 20px;
 	margin-top: -1px;
 	height: 70px;
 	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
 	/* border: 1px solid magenta; */
 }
 
@@ -174,10 +175,10 @@ select {
 	background-color: white;
 	font-size: 35px;
 	color: rgb(123, 93, 119);
-	align-content: center;
+	text-align: center;
 	border-radius: 50px;
 	text-align: center;
-	padding: 0px 10px 0px 0px;
+	padding: 0px 15px 0px 15px;
 	margin: 0px;
 	/* border: 1px solid red; */
 }
@@ -187,8 +188,9 @@ select {
 	font-size: small;
 	font-weight: bold;
 	color: rgb(123, 93, 119);
-	margin-top: 0px;
+	margin-top: 5px;
 	padding: 0px;
+	text-align: center;
 	/* border: 1px solid red; */
 }
 
