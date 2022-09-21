@@ -1,10 +1,15 @@
+html {
+	height: 100vh;
+	width: 100vw;
+}
+
 body {
 	/* background-color: rgba(165, 118, 120, 0.315); */
+	height: 99vh;
 	background: linear-gradient(to top, rgba(165, 118, 120, 0.315), white);
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-attachment: fixed;
-	height: 100vh;
 	padding: 0px 5px 5px 5px;
 	margin: 0px;
 	display: flex;
@@ -12,38 +17,43 @@ body {
 	/* justify-content: flex-start; */
 	align-items: center;
 	position: static;
-	/* border: 1px solid yellow; */
+	/* border: 1px solid red; */
 }
 
 #app {
-	padding-top: 10vh;
-	/* position: fixed; */
+	margin-top: 14vh;
+	/* border: 1px solid blue; */
 }
 
 /* ROOMS ____________________________________________________________ */
 
-/* #rooms-wrapper {
-	border: 1px solid blue;
-} */
+#rooms-wrapper {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	/* border: 1px solid rgb(0, 255, 213); */
+}
 
 #waiting-room {
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
+	justify-content: flex-start;
 	align-items: center;
-	min-height: 50vh;
-	height: 80vh;
-	/* border: 1px solid red; */
-	padding: 10px;
+	max-width: 500px;
+	min-height: 500px;
 	gap: 10px;
+	/* border: 1px solid green; */
 }
 
-.headline {
-	/* border: 1px solid green; */
+.waiting-room-headline {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
 	font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande',
 		'Lucida Sans', Arial, sans-serif;
 	font-weight: bold;
 	font-size: x-large;
+	/* border: 1px solid blue; */
 }
 
 .form {
@@ -51,10 +61,10 @@ body {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	/* border: 1px solid blue; */
 	justify-content: space-evenly;
 	align-items: stretch;
 	gap: 10px;
+	/* border: 1px solid magenta; */
 }
 
 .submit-button {
@@ -127,14 +137,14 @@ select {
 /* HEADER ______________________________________________________________ */
 
 #header {
-	/* border: 1px solid orange; */
 	position: fixed;
 	background-color: rgba(123, 93, 119, 0.308);
-	/* background-color: blue; */
 	width: 100%;
 	padding: 5px 5px 5px 15px;
 	margin-top: -1px;
+	height: 70px;
 	backdrop-filter: blur(10px);
+	/* border: 1px solid magenta; */
 }
 
 @media screen and (max-device-width: 450px) and (orientation: portrait) {
@@ -147,37 +157,39 @@ select {
 }
 
 #title-wrapper {
+	height: 60px;
 	width: fit-content;
+	height: 100%;
 	margin: 0px;
 	padding: 0px;
-	/* border: 1px solid; */
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	/* border: 1px solid blue; */
 }
 
 #title {
+	width: fit-content;
 	font-family: 'Modak', cursive;
-	/* background: linear-gradient(to left, rgba(165, 118, 120, 0.315), white, rgba(165, 146, 118, 0.336)); */
 	background-color: white;
 	font-size: 35px;
 	color: rgb(123, 93, 119);
 	align-content: center;
-	/* border: 1px solid purple; */
 	border-radius: 50px;
 	text-align: center;
-	width: fit-content;
 	padding: 0px 10px 0px 0px;
-	/* height: 10vh; */
-	/* position: fixed; */
+	margin: 0px;
+	/* border: 1px solid red; */
 }
 
-#sub-heading {
+#sub-title {
 	font-family: 'Courier New', Courier, monospace;
-	font-size: x-small;
+	font-size: small;
 	font-weight: bold;
 	color: rgb(123, 93, 119);
-	margin-top: 5px;
+	margin-top: 0px;
+	padding: 0px;
+	/* border: 1px solid red; */
 }
 
 /* MESSAGE _________________________________________________ */
@@ -187,7 +199,7 @@ select {
 	font-family: Arial, Helvetica, sans-serif;
 	border-radius: 30px;
 	padding: 10px;
-	height: auto;
+	height: 15px;
 	max-width: 50%;
 }
 

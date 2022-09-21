@@ -237,7 +237,7 @@ export default function Chat() {
 			) : (
 				// Create-Room and Join-Room forms
 				<div id='waiting-room'>
-					<div className='headline'>🥔 CREATE NEW ROOM</div>
+					<div className='waiting-room-headline'>🥔 CREATE NEW ROOM</div>
 					<form
 						className='form'
 						onSubmit={handleCreateRoom}
@@ -266,8 +266,8 @@ export default function Chat() {
 							Create Room
 						</button>
 					</form>
-					<div className='headline'>or</div>
-					<div className='headline'>🥔+🥔 JOIN EXISTING ROOM</div>
+					<div className='waiting-room-headline'>or</div>
+					<div className='waiting-room-headline'>🥔+🥔 JOIN EXISTING ROOM</div>
 					<form className='form' onSubmit={handleJoinRoom} key='join-form'>
 						<input
 							name='joinUserRoom'
