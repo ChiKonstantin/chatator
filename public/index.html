@@ -1,32 +1,35 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <!-- Defines the character set -->
-    <meta charset="UTF-8" />
-    <link rel="stylesheet" href="/style.css" />
-    <!-- Our js bundle will be in 'bundle.js' -->
-    <!-- The 'defer' attribute will ensure that it is run only after the DOM finishes loading -->
-    <link href="https://fonts.googleapis.com/css2?family=Modak&display=swap" rel="stylesheet">
-    <script src="/bundle.js" defer></script>
-    <!-- Responsive design? Check. This tag will make mobile browsers scale to device width -->
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Chatator - messenger that translates!</title>
-  </head>
-  <body>
-    <!-- We will render our React app into a div with an id of 'app' -->
-    <!-- We can grab it off the DOM by saing document.getElementById('app'); -->
-    <div id="header">
-      <div class="wrapper-div">
 
+<head>
+  <!-- Defines the character set -->
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="/style.css" />
+  <!-- Our js bundle will be in 'bundle.js' -->
+  <!-- The 'defer' attribute will ensure that it is run only after the DOM finishes loading -->
+  <link href="https://fonts.googleapis.com/css2?family=Modak&display=swap" rel="stylesheet">
+  <script src="/bundle.js" defer></script>
+  <!-- Responsive design? Check. This tag will make mobile browsers scale to device width -->
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chatator - messenger that translates!</title>
+</head>
 
-
-        <div id="title-wrap">🥔 CHATATOR
-          
-        </div>
-        <div class="heading-sub">messenger that translates</div>
-        
+<body>
+  <!-- We will render our React app into a div with an id of 'app' -->
+  <!-- We can grab it off the DOM by saing document.getElementById('app'); -->
+  <div id="header">
+    <div id="title-wrapper">
+      <div id="title">
+        🥔 CHATATOR
+      </div>
+      <div id="sub-heading">
+        messenger that translates
       </div>
     </div>
-    <div id="app">Gathering the potatoes... Hold on...</div>
-  </body>
+  </div>
+  <div id="app">
+    Gathering the potatoes... Hold on...
+  </div>
+</body>
+
 </html>

@@ -1,252 +1,223 @@
+body {
+	/* background-color: rgba(165, 118, 120, 0.315); */
+	background: linear-gradient(to top, rgba(165, 118, 120, 0.315), white);
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-attachment: fixed;
+	height: 100vh;
+	padding: 0px 5px 5px 5px;
+	margin: 0px;
+	display: flex;
+	flex-direction: column;
+	/* justify-content: flex-start; */
+	align-items: center;
+	position: static;
+	/* border: 1px solid yellow; */
+}
+
 #app {
-  padding-top: 10vh;
-  /* position: fixed; */
+	padding-top: 10vh;
+	/* position: fixed; */
 }
 
+/* ROOMS ____________________________________________________________ */
 
-.message-bubble-self {
-  background-color: rgb(228, 159, 163);
-  color: white;
-  font-family: Arial, Helvetica, sans-serif;
-  border-radius: 30px;
-  padding: 10px;
-  height: auto;
-  max-width: 50%;
-}
-
-.message-bubble-roommate {
-  background-color: rgb(196, 168, 106);
-  color: white;
-  font-family: Arial, Helvetica, sans-serif;
-  border-radius: 30px;
-  padding: 10px;
-  height: auto;
-  width: auto;
-}
-
-.message-bubble-admin {
-  background-color: rgb(185, 185, 185);
-  color: white;
-  font-family: Arial, Helvetica, sans-serif;
-  border-radius: 7px;
-  padding: 7px;
-  height: auto;
-  width: auto;
-}
-
-.message-div-self {
-  text-align: right;
-}
-.message-div-admin {
-  text-align: center;
-}
-
-.message-div-roommate {
-  text-align: left;
-}
-
-/* .tooltip {
-  position: relative;
-  display: inline-block;
-}
-
-.tooltip .tooltiptext {
-  visibility: hidden;
-  width: 140px;
-  background-color: #555;
-  color: #fff;
-  text-align: center;
-  border-radius: 6px;
-  padding: 5px;
-  position: absolute;
-  z-index: 1;
-  bottom: 150%;
-  left: 50%;
-  margin-left: -75px;
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-
-.tooltip .tooltiptext::after {
-  content: '';
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  margin-left: -5px;
-  border-width: 5px;
-  border-style: solid;
-  border-color: #555 transparent transparent transparent;
-}
-
-.tooltip:hover .tooltiptext {
-  visibility: visible;
-  opacity: 1;
+/* #rooms-wrapper {
+	border: 1px solid blue;
 } */
 
-#header{
-/* border: 1px solid orange; */
-position: fixed;
-background-color: rgba(123, 93, 119, 0.308);
-/* background-color: blue; */
-width: 100%;
-padding: 5px 5px 5px 15px;
-margin-top: -1px;
-backdrop-filter: blur(10px);
-}
-
-@media screen and (max-device-width : 450px) and (orientation: portrait) {
-  #header{
-    /* background-color: brown; */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-}
-
-#title-wrap {
-font-family: 'Modak', cursive;
-/* background: linear-gradient(to left, rgba(165, 118, 120, 0.315), white, rgba(165, 146, 118, 0.336)); */
-background-color: white;
-font-size: 35px;
-color: rgb(123, 93, 119);
-align-content: center;
-/* border: 1px solid purple; */
-border-radius: 50px;
-text-align: center;
-width:fit-content;
-padding: 0px 10px 0px 0px;
-/* height: 10vh; */
-/* position: fixed; */
-
-}
-.wrapper-div{
-  width:fit-content;
-  margin: 0px;
-  padding: 0px;
-  /* border: 1px solid; */
-  display: flex;
-  flex-direction:column;
-  align-items:center;
-}
-
-body {
-/* background-color: rgba(165, 118, 120, 0.315); */
-background: linear-gradient(to top, rgba(165, 118, 120, 0.315), white);
-background-repeat: no-repeat;
-background-size: cover;
-background-attachment: fixed;
-height: 100vh;
-padding: 0px 5px 5px 5px ;
-margin: 0px;
-display: flex;
-flex-direction: column;
-/* justify-content: flex-start; */
-align-items: center;
-position: static;
-/* border: 1px solid yellow; */
-
-}
-
-.heading-sub{
-  font-family:'Courier New', Courier, monospace;
-  font-size:x-small;
-  font-weight: bold;
-  color: rgb(123, 93, 119);
-  margin-top: 5px;
-}
-
-.waiting-room {
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
-min-height: 50vh;
-height: 80vh;
-/* border: 1px solid red; */
-padding: 10px;
-gap: 10px;
+#waiting-room {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	min-height: 50vh;
+	height: 80vh;
+	/* border: 1px solid red; */
+	padding: 10px;
+	gap: 10px;
 }
 
 .headline {
-  /* border: 1px solid green; */
-  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-  font-weight: bold;
-  font-size: x-large;
-
+	/* border: 1px solid green; */
+	font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande',
+		'Lucida Sans', Arial, sans-serif;
+	font-weight: bold;
+	font-size: x-large;
 }
 
 .form {
-width: 80%;
-display: flex;
-flex-direction: column;
-align-items: center;
-/* border: 1px solid blue; */
-justify-content: space-evenly;
-align-items: stretch;
-gap: 10px
+	width: 80%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	/* border: 1px solid blue; */
+	justify-content: space-evenly;
+	align-items: stretch;
+	gap: 10px;
 }
 
 .submit-button {
-  width: 100%;
-  background-color:rgb(123, 93, 119);
-  color: white;
-  padding: 15px 20px;
-  border: none;
-  border-radius:50px;
-  cursor: pointer;
-  font-size: medium;
+	width: 100%;
+	background-color: rgb(123, 93, 119);
+	color: white;
+	padding: 15px 20px;
+	border: none;
+	border-radius: 50px;
+	cursor: pointer;
+	font-size: medium;
 }
 
-input, select{
-  width: 100%;
-  padding: 12px 20px;
-  display: inline-block;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-  font-size: medium;
-
+input,
+select {
+	width: 100%;
+	padding: 12px 20px;
+	display: inline-block;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	box-sizing: border-box;
+	font-size: medium;
 }
 
-.chat-room{
-  border: 1px solid red;
-  height: 80vh;
-  width: 90vw;
-  /* padding: 10px */
+.chat-room {
+	border: 1px solid red;
+	height: 80vh;
+	width: 90vw;
+	/* padding: 10px */
 }
 
-.chat-form{
-  width: 100%;
-  /* padding: 5px; */
-  /* position: fixed; */
-  margin: 5px;
-  display: flex;
-  overflow: hidden;
-  flex-direction: row;
-  border: 1px solid blue;
-  gap: 10px;
-  bottom: 0;
-  backdrop-filter: blur(10px);
-  background-color: rgba(123, 93, 119, 0.308);
+/* MESSAGE INPUT __________________________________________________________ */
+
+#message-input {
+	width: 100%;
+	/* padding: 5px; */
+	/* position: fixed; */
+	margin: 5px;
+	display: flex;
+	overflow: hidden;
+	flex-direction: row;
+	/* border: 1px solid blue; */
+	gap: 10px;
+	bottom: 0;
+	backdrop-filter: blur(10px);
+	background-color: rgba(123, 93, 119, 0.308);
 }
 
 .message-button {
-  width: fit-content;
-  background-color:rgb(123, 93, 119);
-  color: white;
-  padding: 5px 5px 5px 5px;
-  border: none;
-  border-radius:50px;
-  cursor: pointer;
-  font-size: x-large;
+	width: fit-content;
+	background-color: rgb(123, 93, 119);
+	color: white;
+	padding: 5px 5px 5px 5px;
+	border: none;
+	border-radius: 50px;
+	cursor: pointer;
+	font-size: x-large;
 }
 
 .message-button-inactive {
-  width: fit-content;
-  color:white;
-  background-color: rgb(194, 194, 194);
-  padding: 5px 5px 5px 5px;
-  border: none;
-  border-radius:50px;
-  font-size: x-large;
+	width: fit-content;
+	color: white;
+	background-color: rgb(194, 194, 194);
+	padding: 5px 5px 5px 5px;
+	border: none;
+	border-radius: 50px;
+	font-size: x-large;
+}
+
+/* HEADER ______________________________________________________________ */
+
+#header {
+	/* border: 1px solid orange; */
+	position: fixed;
+	background-color: rgba(123, 93, 119, 0.308);
+	/* background-color: blue; */
+	width: 100%;
+	padding: 5px 5px 5px 15px;
+	margin-top: -1px;
+	backdrop-filter: blur(10px);
+}
+
+@media screen and (max-device-width: 450px) and (orientation: portrait) {
+	#header {
+		/* background-color: brown; */
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+}
+
+#title-wrapper {
+	width: fit-content;
+	margin: 0px;
+	padding: 0px;
+	/* border: 1px solid; */
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+#title {
+	font-family: 'Modak', cursive;
+	/* background: linear-gradient(to left, rgba(165, 118, 120, 0.315), white, rgba(165, 146, 118, 0.336)); */
+	background-color: white;
+	font-size: 35px;
+	color: rgb(123, 93, 119);
+	align-content: center;
+	/* border: 1px solid purple; */
+	border-radius: 50px;
+	text-align: center;
+	width: fit-content;
+	padding: 0px 10px 0px 0px;
+	/* height: 10vh; */
+	/* position: fixed; */
+}
+
+#sub-heading {
+	font-family: 'Courier New', Courier, monospace;
+	font-size: x-small;
+	font-weight: bold;
+	color: rgb(123, 93, 119);
+	margin-top: 5px;
+}
+
+/* MESSAGE _________________________________________________ */
+.message-bubble-self {
+	background-color: rgb(228, 159, 163);
+	color: white;
+	font-family: Arial, Helvetica, sans-serif;
+	border-radius: 30px;
+	padding: 10px;
+	height: auto;
+	max-width: 50%;
+}
+
+.message-bubble-roommate {
+	background-color: rgb(196, 168, 106);
+	color: white;
+	font-family: Arial, Helvetica, sans-serif;
+	border-radius: 30px;
+	padding: 10px;
+	height: auto;
+	width: auto;
+}
+
+.message-bubble-admin {
+	background-color: rgb(185, 185, 185);
+	color: white;
+	font-family: Arial, Helvetica, sans-serif;
+	border-radius: 7px;
+	padding: 7px;
+	height: auto;
+	width: auto;
+}
+
+.message-div-self {
+	text-align: right;
+}
+.message-div-admin {
+	text-align: center;
+}
+
+.message-div-roommate {
+	text-align: left;
 }
