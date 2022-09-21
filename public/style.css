@@ -21,7 +21,7 @@ body {
 }
 
 #app {
-	margin-top: 14vh;
+	margin-top: 90px;
 	/* border: 1px solid blue; */
 }
 
@@ -188,7 +188,7 @@ select {
 	font-size: small;
 	font-weight: bold;
 	color: rgb(123, 93, 119);
-	margin-top: 5px;
+	margin-top: 2px;
 	padding: 0px;
 	text-align: center;
 	/* border: 1px solid red; */
