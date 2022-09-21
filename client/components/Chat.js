@@ -100,7 +100,7 @@ export default function Chat() {
 		});
 	};
 
-	const handleSendMessage = function (message, event) {
+	const handleSendMessage = async function (message, event) {
 		event.preventDefault();
 
 		if (message === '' || message === undefined) {
@@ -113,7 +113,7 @@ export default function Chat() {
 				messageUser: self.userName,
 				messageType: 'self',
 			};
-			dispatch(postMessage(newMessage));
+			await dispatch(postMessage(newMessage));
 			if (users.length < 2) {
 				const emptyRoomMessage = {
 					message: `You are messaging to an empty room...`,
@@ -123,10 +123,17 @@ export default function Chat() {
 					messageType: 'admin',
 					adminMessageSubject: '',
 				};
-				dispatch(translateMessage(emptyRoomMessage));
+				await dispatch(translateMessage(emptyRoomMessage));
 				// console.log('NOONE ELSE IN THIS ROOM!');
 			}
-			setMessage({});
+			await setMessage({});
+			const scrollHeight = document.body.scrollHeight;
+			// window.scrollTo(0, scrollHeight);
+			window.scroll({
+				top: scrollHeight,
+				behavior: 'smooth',
+			});
+			console.log('SCROLL HEIGHT: ', scrollHeight);
 		}
 	};
 
@@ -187,7 +194,7 @@ export default function Chat() {
 			);
 		} else {
 			return (
-				<button className='message-button' type='submit'>
+				<button className='message-button-active' type='submit'>
 					{' '}
 					<TiArrowUpThick />{' '}
 				</button>
@@ -197,9 +204,13 @@ export default function Chat() {
 
 	return (
 		// Actual chat room:
+		// <div >
+		// 	{self.isInRoom ? (
+		//CHAT ROOM BELOW
+
 		<div id='rooms-wrapper'>
-			{self.isInRoom ? (
-				<div className='chat-room'>
+			<div id='chat-room'>
+				{/* <div id='chat-room-info'>
 					<div>
 						<button onClick={toggleSoundButton}>{renderSoundButton()}</button>
 						<h1>Welcome, {self.userName}!</h1>
@@ -215,16 +226,18 @@ export default function Chat() {
 					</div>
 					<div>Users in the room:</div>
 					<ul className='users-wrapper'>{renderUsers(users)}</ul>
-					<div className='messages-wrapper'>{renderMessages(messages)}</div>
-					<div>{rednerTypingStatus()}</div>
 
+					<div>{rednerTypingStatus()}</div>
+				</div> */}
+				<div id='chat'>
+					<div id='messages-wrapper'>{renderMessages(messages)}</div>
 					<form
 						onSubmit={(event) => handleSendMessage(newMessage, event)}
 						id='message-input'
 					>
 						<input
 							type='text'
-							id='entry'
+							id='message-entry'
 							name='newMessage'
 							value={newMessage || ''}
 							onChange={handleTypingMessage}
@@ -234,71 +247,74 @@ export default function Chat() {
 						{renderSendButton(newMessage)}
 					</form>
 				</div>
-			) : (
-				// Create-Room and Join-Room forms
-				<div id='waiting-room'>
-					<div className='waiting-room-headline'>🥔 CREATE NEW ROOM</div>
-					<form
-						className='form'
-						onSubmit={handleCreateRoom}
-						key='create-room-form'
-					>
-						<input
-							type='text'
-							name='newUserName'
-							onChange={handleChange}
-							value={values.newUserName || ''}
-							placeholder='Your Name'
-						/>
-						<select
-							name='newUserLang'
-							onChange={handleChange}
-							value={values.newUserLang || ''}
-							placeholder='Language'
-						>
-							{languages.map((language) => (
-								<option value={language.code} key={`lang_${language.code}`}>
-									{language.name}
-								</option>
-							))}
-						</select>
-						<button className='submit-button' type='submit'>
-							Create Room
-						</button>
-					</form>
-					<div className='waiting-room-headline'>or</div>
-					<div className='waiting-room-headline'>🥔+🥔 JOIN EXISTING ROOM</div>
-					<form className='form' onSubmit={handleJoinRoom} key='join-form'>
-						<input
-							name='joinUserRoom'
-							onChange={handleChange}
-							value={values.joinUserRoom || ''}
-							placeholder='Room Code'
-						/>
-						<input
-							type='text'
-							name='joinUserName'
-							onChange={handleChange}
-							value={values.joinUserName || ''}
-							placeholder='Your Name'
-						/>
-						<select
-							name='joinUserLang'
-							onChange={handleChange}
-							value={values.joinUserLang || ''}
-						>
-							{languages.map((language) => (
-								<option value={language.code} key={`lang_${language.code}`}>
-									{language.name}
-								</option>
-							))}
-						</select>
-						<button className='submit-button' type='submit'>
-							Join Room
-						</button>
-					</form>
-				</div>
-			)}
+			</div>
 		</div>
+		//CHAT ROOM ABOVE
+		// 	) : (
+		// 		// Create-Room and Join-Room forms
+		// 		<div id='waiting-room'>
+		// 			<div className='waiting-room-headline'>🥔 CREATE NEW ROOM</div>
+		// 			<form
+		// 				className='form'
+		// 				onSubmit={handleCreateRoom}
+		// 				key='create-room-form'
+		// 			>
+		// 				<input
+		// 					type='text'
+		// 					name='newUserName'
+		// 					onChange={handleChange}
+		// 					value={values.newUserName || ''}
+		// 					placeholder='Your Name'
+		// 				/>
+		// 				<select
+		// 					name='newUserLang'
+		// 					onChange={handleChange}
+		// 					value={values.newUserLang || ''}
+		// 					placeholder='Language'
+		// 				>
+		// 					{languages.map((language) => (
+		// 						<option value={language.code} key={`lang_${language.code}`}>
+		// 							{language.name}
+		// 						</option>
+		// 					))}
+		// 				</select>
+		// 				<button className='submit-button' type='submit'>
+		// 					Create Room
+		// 				</button>
+		// 			</form>
+		// 			<div className='waiting-room-headline'>or</div>
+		// 			<div className='waiting-room-headline'>🥔+🥔 JOIN EXISTING ROOM</div>
+		// 			<form className='form' onSubmit={handleJoinRoom} key='join-form'>
+		// 				<input
+		// 					name='joinUserRoom'
+		// 					onChange={handleChange}
+		// 					value={values.joinUserRoom || ''}
+		// 					placeholder='Room Code'
+		// 				/>
+		// 				<input
+		// 					type='text'
+		// 					name='joinUserName'
+		// 					onChange={handleChange}
+		// 					value={values.joinUserName || ''}
+		// 					placeholder='Your Name'
+		// 				/>
+		// 				<select
+		// 					name='joinUserLang'
+		// 					onChange={handleChange}
+		// 					value={values.joinUserLang || ''}
+		// 				>
+		// 					{languages.map((language) => (
+		// 						<option value={language.code} key={`lang_${language.code}`}>
+		// 							{language.name}
+		// 						</option>
+		// 					))}
+		// 				</select>
+		// 				<button className='submit-button' type='submit'>
+		// 					Join Room
+		// 				</button>
+		// 			</form>
+		// 		</div>
+		// 	)}
+		// </div>
 	);
 }

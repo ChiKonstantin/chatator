@@ -31,7 +31,7 @@ body {
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
-	/* border: 1px solid rgb(0, 255, 213); */
+	border: 2px solid rgb(0, 255, 213);
 }
 
 #waiting-room {
@@ -89,49 +89,80 @@ select {
 	font-size: medium;
 }
 
-.chat-room {
+#chat-room {
+	width: 99vw;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
 	border: 1px solid red;
-	height: 80vh;
-	width: 90vw;
-	/* padding: 10px */
+	/* overflow: auto; */
+}
+
+#chat-room-info {
+	width: 32%;
+	border: 1px solid blue;
+	position: fixed;
+}
+
+#chat {
+	/* width: 65%; */
+	border: 1px solid magenta;
+	padding: 10px;
+	overflow: auto;
+	margin-bottom: 70px;
+	/* position: sticky; */
+	/* scroll-snap-align: end; */
+}
+
+#messages-wrapper {
+	border: 1px solid green;
 }
 
 /* MESSAGE INPUT __________________________________________________________ */
 
 #message-input {
-	width: 100%;
-	/* padding: 5px; */
-	/* position: fixed; */
-	margin: 5px;
-	display: flex;
-	overflow: hidden;
-	flex-direction: row;
-	/* border: 1px solid blue; */
-	gap: 10px;
-	bottom: 0;
-	backdrop-filter: blur(10px);
+	height: 50px;
+	position: fixed;
 	background-color: rgba(123, 93, 119, 0.308);
+	width: 65%;
+	padding: 5px 5px 5px 20px;
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+
+	bottom: 0;
+
+	border-radius: 50px;
+
+	border: 1px solid purple;
 }
 
-.message-button {
-	width: fit-content;
+.message-button-active {
+	min-width: 40px;
+	min-height: 40px;
 	background-color: rgb(123, 93, 119);
 	color: white;
 	padding: 5px 5px 5px 5px;
 	border: none;
-	border-radius: 50px;
+	border-radius: 50%;
 	cursor: pointer;
 	font-size: x-large;
+	border: 1px solid blue;
 }
 
 .message-button-inactive {
-	width: fit-content;
+	min-width: 40px;
+	min-height: 40px;
 	color: white;
 	background-color: rgb(194, 194, 194);
 	padding: 5px 5px 5px 5px;
 	border: none;
-	border-radius: 50px;
+	border-radius: 50%;
 	font-size: x-large;
+	border: 1px solid blue;
+}
+
+#message-entry {
+	width: 50%;
 }
 
 /* HEADER ______________________________________________________________ */
@@ -140,7 +171,7 @@ select {
 	position: fixed;
 	background-color: rgba(123, 93, 119, 0.308);
 	width: 100%;
-	padding: 5px 5px 5px 20px;
+	padding: 5px 5px 5px 15px;
 	margin-top: -1px;
 	height: 70px;
 	backdrop-filter: blur(10px);
