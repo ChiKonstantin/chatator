@@ -210,7 +210,7 @@ export default function Chat() {
 
 		<div id='rooms-wrapper'>
 			<div id='chat-room'>
-				{/* <div id='chat-room-info'>
+				<div id='chat-room-info'>
 					<div>
 						<button onClick={toggleSoundButton}>{renderSoundButton()}</button>
 						<h1>Welcome, {self.userName}!</h1>
@@ -228,7 +228,7 @@ export default function Chat() {
 					<ul className='users-wrapper'>{renderUsers(users)}</ul>
 
 					<div>{rednerTypingStatus()}</div>
-				</div> */}
+				</div>
 				<div id='chat'>
 					<div id='messages-wrapper'>{renderMessages(messages)}</div>
 					<form

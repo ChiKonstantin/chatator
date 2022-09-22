@@ -99,9 +99,19 @@ select {
 }
 
 #chat-room-info {
-	width: 32%;
-	border: 1px solid blue;
 	position: fixed;
+	background-color: rgba(123, 93, 119, 0.308);
+	padding: 5px 5px 5px 20px;
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+
+	left: 0;
+	margin: 0px 0px 0px 5px;
+
+	border-radius: 30px;
+	width: 10%;
+	height: 83%;
+	/* border: 1px solid blue; */
 }
 
 #chat {
