@@ -211,23 +211,18 @@ export default function Chat() {
 		<div id='rooms-wrapper'>
 			<div id='chat-room'>
 				<div id='chat-room-info'>
-					<div>
+					<div className='div-test'>
 						<button onClick={toggleSoundButton}>{renderSoundButton()}</button>
-						<h1>Welcome, {self.userName}!</h1>
-						<h2>Here's some info about you:</h2>
-						<h3>
-							Your name is {self.userName}
-							<br /> Your room code is: {self.userRoom}
-							<button onClick={copyCode}>Copy code</button>
-							<br /> <button onClick={copyLink}>Link to Room</button>
-							<br /> And your language is: {self.userLangName}
-							<br />
-						</h3>
+						<button onClick={copyCode}>Copy code</button>
+						<button onClick={copyLink}>Link to Room</button>
+						Room code: {self.userRoom}
+						Your language: {self.userLangName}
 					</div>
-					<div>Users in the room:</div>
-					<ul className='users-wrapper'>{renderUsers(users)}</ul>
-
-					<div>{rednerTypingStatus()}</div>
+					<div className='div-test'>
+						Users in the room:
+						<ul className='users-wrapper'>{renderUsers(users)}</ul>
+					</div>
+					<div className='div-test'>Typing status: {rednerTypingStatus()}</div>
 				</div>
 				<div id='chat'>
 					<div id='messages-wrapper'>{renderMessages(messages)}</div>
