@@ -17,24 +17,22 @@ body {
 	flex-direction: column;
 	align-items: center;
 	position: static;
-	border: 1px solid red;
+	/* border: 1px solid red; */
 }
 
 .div-test {
 	border: 1px solid salmon;
 }
 
-#app {
-	margin: 78px;
-
-	/* border: 2px solid black; */
-}
+/* #app {
+	border: 2px solid black;
+} */
 
 /* ROOMS ____________________________________________________________ */
 
 #rooms-wrapper {
 	display: flex;
-	flex-direction: row;
+	flex-direction: column;
 	justify-content: center;
 	/* border: 2px solid rgb(0, 255, 213); */
 }
@@ -95,38 +93,89 @@ select {
 }
 
 #chat-room {
-	width: 99vw;
+	/* width: 100vw; */
 	display: flex;
 	flex-direction: column;
-	justify-content: space-around;
-	border: 1px solid blueviolet;
+	justify-content: center;
+	align-items: stretch;
+	/* border: 1px solid rgb(146, 83, 10); */
 	/* overflow: auto; */
 }
 
-#chat-room-info {
+#chat-room-header {
+	position: fixed;
+	/* background-color: rgba(255, 0, 230, 0.303); */
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	right: 0px;
+	left: 0px;
+	top: 0px;
+	height: 80px;
+}
+
+.header-buttons-div {
 	display: flex;
 	flex-direction: column;
-	justify-content: start;
-	/* position: fixed; */
-	/* background-color: rgba(123, 93, 119, 0.308); */
+	justify-content: space-evenly;
+	align-items: center;
+	gap: 5px;
+	padding: 5px;
+	width: 75px;
+	font-family: 'Courier New', Courier, monospace;
+	font-size: small;
+	font-weight: bold;
+	color: rgb(123, 93, 119);
+	text-align: center;
+
+	/* border: 1px solid green; */
+}
+
+.border-div {
+	display: flex;
+	flex-direction: row;
+	align-content: center;
+	gap: 5px;
+	/* border: 1px solid rgb(0, 128, 100); */
+}
+
+.header-button {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	width: 30px;
+	height: 30px;
+	background-color: rgb(123, 93, 119);
+	color: white;
+	padding: 5px;
+	border: none;
+	border-radius: 50px;
+	cursor: pointer;
+	font-size: medium;
+}
+
+#chat-room-info {
+	position: fixed;
+	background-color: rgba(123, 93, 119, 0.308);
 	padding: 20px;
-	/* backdrop-filter: blur(10px);
-	-webkit-backdrop-filter: blur(10px); */
+	right: 0px;
+	left: 0px;
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+	top: 80px;
 
-	/* left: 0; */
-	/* margin: 0px 0px 0px 5px; */
-
-	border-radius: 30px;
-	border: 1px solid blue;
+	border-radius: 0px 0px 20px 20px;
+	/* border: 1px solid blue; */
 }
 
 #chat {
 	display: flex;
 	flex-direction: column;
-	align-items: center;
-	justify-content: stretch;
+	/* justify-content: center; */
 	/* width: 100%; */
-	border: 1px solid magenta;
+	/* align-items: stretch; */
+	/* border: 1px solid magenta; */
 	padding: 10px;
 	overflow: auto;
 	margin-bottom: 70px;
@@ -135,8 +184,8 @@ select {
 }
 
 #messages-wrapper {
-	width: 65%;
-	border: 1px solid green;
+	/* width: 65%; */
+	/* border: 1px solid green; */
 }
 
 /* MESSAGE INPUT __________________________________________________________ */
@@ -144,27 +193,38 @@ select {
 #message-input {
 	display: flex;
 	flex-direction: row;
+	/* justify-content: center; */
 	align-items: center;
-	justify-content: stretch;
-
+	gap: 10px;
 	height: 50px;
-	/* position: fixed; */
+	position: fixed;
+	right: 5px;
+	left: 5px;
 	background-color: rgba(123, 93, 119, 0.308);
 	/* width: 100%; */
-	padding: 5px 5px 5px 20px;
+	padding: 5px 10px 5px 20px;
 	backdrop-filter: blur(10px);
 	-webkit-backdrop-filter: blur(10px);
 
-	bottom: 0;
+	bottom: 5px;
 
 	border-radius: 50px;
 
-	border: 1px solid purple;
+	/* border: 1px solid purple; */
+}
+
+#message-input-form {
+	width: 100%;
 }
 
 .message-button-active {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+
 	min-width: 40px;
-	min-height: 40px;
+	height: 40px;
 	background-color: rgb(123, 93, 119);
 	color: white;
 	padding: 5px 5px 5px 5px;
@@ -172,23 +232,29 @@ select {
 	border-radius: 50%;
 	cursor: pointer;
 	font-size: x-large;
-	border: 1px solid blue;
+	/* border: 1px solid blue; */
 }
 
 .message-button-inactive {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+
 	min-width: 40px;
-	min-height: 40px;
+	height: 40px;
 	color: white;
 	background-color: rgb(194, 194, 194);
 	padding: 5px 5px 5px 5px;
 	border: none;
 	border-radius: 50%;
 	font-size: x-large;
-	border: 1px solid blue;
+	/* border: 1px solid blue; */
 }
 
 #message-entry {
-	width: 50%;
+	margin-right: 15px;
+	/* border: 1px solid red; */
 }
 
 /* HEADER ______________________________________________________________ */
@@ -198,7 +264,6 @@ select {
 	background-color: rgba(123, 93, 119, 0.308);
 	width: 100vw;
 	padding: 5px 5px 5px 15px;
-	margin-top: -1px;
 	height: 70px;
 	backdrop-filter: blur(10px);
 	-webkit-backdrop-filter: blur(10px);

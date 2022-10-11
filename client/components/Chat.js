@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 // import { clientSocket } from '../clientSocket';
 import { TiArrowUpThick } from 'react-icons/ti';
+import { FaVolumeDown } from 'react-icons/fa';
+import { FaVolumeMute } from 'react-icons/fa';
+import { TbCopy } from 'react-icons/tb';
+import { BsPersonFill } from 'react-icons/bs';
 import Message from './Message';
 import { clientSocket } from '../clientSocket';
 import { useSelector, useDispatch } from 'react-redux';
@@ -152,6 +156,14 @@ export default function Chat() {
 			return users.map((user) => <UsersList user={user} />);
 		}
 	};
+
+	const renderUserCount = function (users) {
+		if (users === undefined) {
+			return '-';
+		} else {
+			return users.length;
+		}
+	};
 	const copyCode = function () {
 		navigator.clipboard.writeText(self.userRoom);
 		alert('Copied room code!');
@@ -178,9 +190,9 @@ export default function Chat() {
 
 	const renderSoundButton = function () {
 		if (sound) {
-			return 'Sound is on';
+			return <FaVolumeDown />;
 		} else {
-			return 'Sound is off';
+			return <FaVolumeMute />;
 		}
 	};
 
@@ -210,37 +222,51 @@ export default function Chat() {
 
 		<div id='rooms-wrapper'>
 			<div id='chat-room'>
-				<div id='chat-room-info'>
-					<div className='div-test'>
-						<button onClick={toggleSoundButton}>{renderSoundButton()}</button>
-						<button onClick={copyCode}>Copy code</button>
-						<button onClick={copyLink}>Link to Room</button>
-						Room code: {self.userRoom}
-						Your language: {self.userLangName}
+				<div id='chat-room-header'>
+					<div className='header-buttons-div'>
+						<div className='border-div'>
+							<BsPersonFill /> {renderUserCount(users)}
+						</div>
+						<div className='border-div'>
+							<button className='header-button' onClick={toggleSoundButton}>
+								{renderSoundButton()}
+							</button>
+						</div>
 					</div>
+					<div className='header-buttons-div'>
+						<div className='border-div'># {self.userRoom}</div>
+
+						<button className='header-button' onClick={copyLink}>
+							<TbCopy />
+						</button>
+					</div>
+				</div>
+				{/* <div id='chat-room-info'>
+					<div className='div-test'>Your language: {self.userLangName}</div>
 					<div className='div-test'>
 						Users in the room:
 						<ul className='users-wrapper'>{renderUsers(users)}</ul>
 					</div>
 					<div className='div-test'>Typing status: {rednerTypingStatus()}</div>
-				</div>
+				</div> */}
 				<div id='chat'>
 					<div id='messages-wrapper'>{renderMessages(messages)}</div>
-					<form
-						onSubmit={(event) => handleSendMessage(newMessage, event)}
-						id='message-input'
-					>
-						<input
-							type='text'
-							id='message-entry'
-							name='newMessage'
-							value={newMessage || ''}
-							onChange={handleTypingMessage}
-							placeholder='Message here'
-						/>
-						{/* <button className='message-button' type='submit'>{renderSendButton(newMessage)}</button> */}
+					<div id='message-input'>
+						<form
+							onSubmit={(event) => handleSendMessage(newMessage, event)}
+							id='message-input-form'
+						>
+							<input
+								type='text'
+								id='message-entry'
+								name='newMessage'
+								value={newMessage || ''}
+								onChange={handleTypingMessage}
+								placeholder='Message here'
+							/>
+						</form>
 						{renderSendButton(newMessage)}
-					</form>
+					</div>
 				</div>
 			</div>
 		</div>
