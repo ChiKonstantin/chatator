@@ -216,126 +216,129 @@ export default function Chat() {
 
 	return (
 		// Actual chat room:
-		// <div >
-		// 	{self.isInRoom ? (
-		//CHAT ROOM BELOW
-
 		<div id='rooms-wrapper'>
-			<div id='chat-room'>
-				<div id='chat-room-header'>
-					<div className='header-buttons-div'>
-						<div className='border-div'>
-							<BsPersonFill /> {renderUserCount(users)}
-						</div>
-						<div className='border-div'>
-							<button className='header-button' onClick={toggleSoundButton}>
-								{renderSoundButton()}
-							</button>
-						</div>
-					</div>
-					<div className='header-buttons-div'>
-						<div className='border-div'># {self.userRoom}</div>
+			{self.isInRoom ? (
+				//CHAT ROOM BELOW
 
-						<button className='header-button' onClick={copyLink}>
-							<TbCopy />
-						</button>
-					</div>
-				</div>
-				{/* <div id='chat-room-info'>
+				<div>
+					<div id='chat-room'>
+						<div id='chat-room-header'>
+							<div className='header-buttons-div'>
+								<div className='border-div'>
+									<BsPersonFill /> {renderUserCount(users)}
+								</div>
+								<div className='border-div'>
+									<button className='header-button' onClick={toggleSoundButton}>
+										{renderSoundButton()}
+									</button>
+								</div>
+							</div>
+							<div className='header-buttons-div'>
+								<div className='border-div'># {self.userRoom}</div>
+
+								<button className='header-button' onClick={copyLink}>
+									<TbCopy />
+								</button>
+							</div>
+						</div>
+						{/* <div id='chat-room-info'>
 					<div className='div-test'>Your language: {self.userLangName}</div>
 					<div className='div-test'>
 						Users in the room:
 						<ul className='users-wrapper'>{renderUsers(users)}</ul>
 					</div>
-					<div className='div-test'>Typing status: {rednerTypingStatus()}</div>
+					
 				</div> */}
-				<div id='chat'>
-					<div id='messages-wrapper'>{renderMessages(messages)}</div>
-					<div id='message-input'>
-						<form
-							onSubmit={(event) => handleSendMessage(newMessage, event)}
-							id='message-input-form'
-						>
-							<input
-								type='text'
-								id='message-entry'
-								name='newMessage'
-								value={newMessage || ''}
-								onChange={handleTypingMessage}
-								placeholder='Message here'
-							/>
-						</form>
-						{renderSendButton(newMessage)}
+						<div id='chat'>
+							<div id='messages-wrapper'>
+								{renderMessages(messages)}
+								<div id='typing-status'>{rednerTypingStatus()}</div>
+							</div>
+							<div id='message-input'>
+								<form
+									onSubmit={(event) => handleSendMessage(newMessage, event)}
+									id='message-input-form'
+								>
+									<input
+										type='text'
+										id='message-entry'
+										name='newMessage'
+										value={newMessage || ''}
+										onChange={handleTypingMessage}
+										placeholder='Message here'
+									/>
+								</form>
+								{renderSendButton(newMessage)}
+							</div>
+						</div>
 					</div>
 				</div>
-			</div>
+			) : (
+				//CHAT ROOM ABOVE
+				// Create-Room and Join-Room forms
+				<div id='waiting-room'>
+					<div className='waiting-room-headline'>🥔 CREATE NEW ROOM</div>
+					<form
+						className='form'
+						onSubmit={handleCreateRoom}
+						key='create-room-form'
+					>
+						<input
+							type='text'
+							name='newUserName'
+							onChange={handleChange}
+							value={values.newUserName || ''}
+							placeholder='Your Name'
+						/>
+						<select
+							name='newUserLang'
+							onChange={handleChange}
+							value={values.newUserLang || ''}
+							placeholder='Language'
+						>
+							{languages.map((language) => (
+								<option value={language.code} key={`lang_${language.code}`}>
+									{language.name}
+								</option>
+							))}
+						</select>
+						<button className='submit-button' type='submit'>
+							Create Room
+						</button>
+					</form>
+					<div className='waiting-room-headline'>or</div>
+					<div className='waiting-room-headline'>🥔+🥔 JOIN EXISTING ROOM</div>
+					<form className='form' onSubmit={handleJoinRoom} key='join-form'>
+						<input
+							name='joinUserRoom'
+							onChange={handleChange}
+							value={values.joinUserRoom || ''}
+							placeholder='Room Code'
+						/>
+						<input
+							type='text'
+							name='joinUserName'
+							onChange={handleChange}
+							value={values.joinUserName || ''}
+							placeholder='Your Name'
+						/>
+						<select
+							name='joinUserLang'
+							onChange={handleChange}
+							value={values.joinUserLang || ''}
+						>
+							{languages.map((language) => (
+								<option value={language.code} key={`lang_${language.code}`}>
+									{language.name}
+								</option>
+							))}
+						</select>
+						<button className='submit-button' type='submit'>
+							Join Room
+						</button>
+					</form>
+				</div>
+			)}
 		</div>
-		//CHAT ROOM ABOVE
-		// 	) : (
-		// 		// Create-Room and Join-Room forms
-		// 		<div id='waiting-room'>
-		// 			<div className='waiting-room-headline'>🥔 CREATE NEW ROOM</div>
-		// 			<form
-		// 				className='form'
-		// 				onSubmit={handleCreateRoom}
-		// 				key='create-room-form'
-		// 			>
-		// 				<input
-		// 					type='text'
-		// 					name='newUserName'
-		// 					onChange={handleChange}
-		// 					value={values.newUserName || ''}
-		// 					placeholder='Your Name'
-		// 				/>
-		// 				<select
-		// 					name='newUserLang'
-		// 					onChange={handleChange}
-		// 					value={values.newUserLang || ''}
-		// 					placeholder='Language'
-		// 				>
-		// 					{languages.map((language) => (
-		// 						<option value={language.code} key={`lang_${language.code}`}>
-		// 							{language.name}
-		// 						</option>
-		// 					))}
-		// 				</select>
-		// 				<button className='submit-button' type='submit'>
-		// 					Create Room
-		// 				</button>
-		// 			</form>
-		// 			<div className='waiting-room-headline'>or</div>
-		// 			<div className='waiting-room-headline'>🥔+🥔 JOIN EXISTING ROOM</div>
-		// 			<form className='form' onSubmit={handleJoinRoom} key='join-form'>
-		// 				<input
-		// 					name='joinUserRoom'
-		// 					onChange={handleChange}
-		// 					value={values.joinUserRoom || ''}
-		// 					placeholder='Room Code'
-		// 				/>
-		// 				<input
-		// 					type='text'
-		// 					name='joinUserName'
-		// 					onChange={handleChange}
-		// 					value={values.joinUserName || ''}
-		// 					placeholder='Your Name'
-		// 				/>
-		// 				<select
-		// 					name='joinUserLang'
-		// 					onChange={handleChange}
-		// 					value={values.joinUserLang || ''}
-		// 				>
-		// 					{languages.map((language) => (
-		// 						<option value={language.code} key={`lang_${language.code}`}>
-		// 							{language.name}
-		// 						</option>
-		// 					))}
-		// 				</select>
-		// 				<button className='submit-button' type='submit'>
-		// 					Join Room
-		// 				</button>
-		// 			</form>
-		// 		</div>
-		// 	)}
-		// </div>
 	);
 }

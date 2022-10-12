@@ -34,6 +34,7 @@ body {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
+	margin-top: 100px;
 	/* border: 2px solid rgb(0, 255, 213); */
 }
 
@@ -98,6 +99,7 @@ select {
 	flex-direction: column;
 	justify-content: center;
 	align-items: stretch;
+	width: 100vw;
 	/* border: 1px solid rgb(146, 83, 10); */
 	/* overflow: auto; */
 }
@@ -175,17 +177,30 @@ select {
 	/* justify-content: center; */
 	/* width: 100%; */
 	/* align-items: stretch; */
-	/* border: 1px solid magenta; */
 	padding: 10px;
 	overflow: auto;
 	margin-bottom: 70px;
 	/* position: sticky; */
 	/* scroll-snap-align: end; */
+	/* border: 1px solid magenta; */
 }
 
 #messages-wrapper {
 	/* width: 65%; */
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
 	/* border: 1px solid green; */
+}
+
+#typing-status {
+	font-family: 'Courier New', Courier, monospace;
+	font-size: small;
+	font-weight: bold;
+	color: rgb(123, 93, 119);
+	text-align: center;
+
+	/* border: 1px solid blue; */
 }
 
 /* MESSAGE INPUT __________________________________________________________ */
@@ -317,42 +332,103 @@ select {
 
 /* MESSAGE _________________________________________________ */
 .message-bubble-self {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: flex-start;
 	background-color: rgb(228, 159, 163);
 	color: white;
 	font-family: Arial, Helvetica, sans-serif;
-	border-radius: 30px;
-	padding: 10px;
-	height: 15px;
+	border-radius: 20px 20px 0px 20px;
+	padding: 5px 20px 5px 20px;
 	max-width: 50%;
+	min-width: 15%;
+
+	/* border: 1px solid red; */
 }
 
 .message-bubble-roommate {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: flex-start;
 	background-color: rgb(196, 168, 106);
 	color: white;
 	font-family: Arial, Helvetica, sans-serif;
-	border-radius: 30px;
-	padding: 10px;
-	height: auto;
-	width: auto;
+	border-radius: 20px 20px 20px 0px;
+	padding: 5px 15px 5px 15px;
+	max-width: 50%;
+	min-width: 15%;
+	/* border: 1px solid red; */
 }
 
 .message-bubble-admin {
-	background-color: rgb(185, 185, 185);
+	background-color: rgba(123, 93, 119, 0.5);
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
 	color: white;
 	font-family: Arial, Helvetica, sans-serif;
-	border-radius: 7px;
-	padding: 7px;
-	height: auto;
-	width: auto;
+	border-radius: 20px;
+	/* padding-top: 0px;
+	padding-bottom: 0px; */
+	padding: 2px 15px 2px 15px;
+	max-width: 80%;
+	min-width: 15%;
+	text-align: center;
+
+	/* border: 1px solid red; */
 }
 
 .message-div-self {
-	text-align: right;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-content: stretch;
+	align-items: flex-end;
+	justify-content: flex-end;
+
+	/* border: 1px solid red; */
 }
 .message-div-admin {
-	text-align: center;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-content: stretch;
+	align-items: center;
+	padding: 0px;
+
+	/* border: 1px solid red; */
 }
 
 .message-div-roommate {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: flex-start;
+
+	/* border: 1px solid red; */
+}
+
+.message-author {
+	padding-left: 15px;
+	padding-right: 15px;
+	font-family: Arial, Helvetica, sans-serif;
+	color: rgb(123, 93, 119);
+	font-weight: bold;
+	font-size: small;
+
+	/* border: 1px solid blue; */
+}
+
+.center-text {
+	align-items: center;
+	/* align-content: center; */
+	text-align: center;
+	width: 100%;
+
+	/* border: 1px solid blue; */
+}
+
+.left-text {
 	text-align: left;
 }
