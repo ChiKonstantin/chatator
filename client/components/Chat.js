@@ -267,8 +267,8 @@ export default function Chat() {
 										onChange={handleTypingMessage}
 										placeholder='Message here'
 									/>
+									{renderSendButton(newMessage)}
 								</form>
-								{renderSendButton(newMessage)}
 							</div>
 						</div>
 					</div>

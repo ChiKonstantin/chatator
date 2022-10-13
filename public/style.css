@@ -229,6 +229,8 @@ select {
 }
 
 #message-input-form {
+	display: flex;
+	flex-direction: row;
 	width: 100%;
 }
 
@@ -275,7 +277,7 @@ select {
 /* HEADER ______________________________________________________________ */
 
 #header {
-	position: fixed;
+	position: absolute;
 	background-color: rgba(123, 93, 119, 0.308);
 	width: 100vw;
 	padding: 5px 5px 5px 15px;
