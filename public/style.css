@@ -100,7 +100,9 @@ select {
 	justify-content: center;
 	align-items: stretch;
 	width: 100vw;
-	/* border: 1px solid rgb(146, 83, 10); */
+	max-width: 600px;
+
+	/* border: 1px solid blue; */
 	/* overflow: auto; */
 }
 
@@ -110,10 +112,16 @@ select {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
-	right: 0px;
-	left: 0px;
+	/* right: 0px;
+	left: 0px; */
 	top: 0px;
 	height: 80px;
+	width: 100%;
+	max-width: 600px;
+	left: 50%;
+	transform: translate(-50%);
+
+	/* border: 1px solid red; */
 }
 
 .header-buttons-div {
@@ -213,15 +221,18 @@ select {
 	gap: 10px;
 	height: 50px;
 	position: fixed;
-	right: 5px;
-	left: 5px;
+	/* right: 5px; */
+	/* left: 5px; */
 	background-color: rgba(123, 93, 119, 0.308);
-	/* width: 100%; */
+	width: 90%;
+	max-width: 600px;
 	padding: 5px 10px 5px 20px;
 	backdrop-filter: blur(10px);
 	-webkit-backdrop-filter: blur(10px);
 
 	bottom: 5px;
+	left: 50%;
+	transform: translate(-50%);
 
 	border-radius: 50px;
 
@@ -231,6 +242,7 @@ select {
 #message-input-form {
 	display: flex;
 	flex-direction: row;
+	align-items: center;
 	width: 100%;
 }
 
@@ -277,13 +289,17 @@ select {
 /* HEADER ______________________________________________________________ */
 
 #header {
-	position: absolute;
+	position: fixed;
 	background-color: rgba(123, 93, 119, 0.308);
 	width: 100vw;
 	padding: 5px 5px 5px 15px;
 	height: 70px;
 	backdrop-filter: blur(10px);
 	-webkit-backdrop-filter: blur(10px);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
 	/* border: 1px solid magenta; */
 }
 
@@ -342,7 +358,7 @@ select {
 	color: white;
 	font-family: Arial, Helvetica, sans-serif;
 	border-radius: 20px 20px 0px 20px;
-	padding: 5px 20px 5px 20px;
+	padding: 7px 20px 7px 20px;
 	max-width: 50%;
 	min-width: 15%;
 
@@ -358,7 +374,7 @@ select {
 	color: white;
 	font-family: Arial, Helvetica, sans-serif;
 	border-radius: 20px 20px 20px 0px;
-	padding: 5px 15px 5px 15px;
+	padding: 7px 15px 7px 15px;
 	max-width: 50%;
 	min-width: 15%;
 	/* border: 1px solid red; */
@@ -377,6 +393,7 @@ select {
 	max-width: 80%;
 	min-width: 15%;
 	text-align: center;
+	z-index: -1;
 
 	/* border: 1px solid red; */
 }
@@ -433,4 +450,8 @@ select {
 
 .left-text {
 	text-align: left;
+}
+
+.no-scroll {
+	overflow: hidden;
 }
