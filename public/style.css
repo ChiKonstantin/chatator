@@ -211,6 +211,16 @@ select {
 	/* border: 1px solid blue; */
 }
 
+.users-wrapper {
+	font-family: Arial, Helvetica, sans-serif;
+	color: rgb(123, 93, 119);
+	font-weight: bold;
+	font-size: small;
+	padding: 0px;
+	margin: 0px;
+	align-items: center;
+}
+
 /* MESSAGE INPUT __________________________________________________________ */
 
 #message-input {

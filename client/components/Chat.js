@@ -131,13 +131,12 @@ export default function Chat() {
 				// console.log('NOONE ELSE IN THIS ROOM!');
 			}
 			await setMessage({});
-			const scrollHeight = document.body.scrollHeight;
-			// window.scrollTo(0, scrollHeight);
-			window.scroll({
-				top: scrollHeight,
-				behavior: 'smooth',
-			});
-			console.log('SCROLL HEIGHT: ', scrollHeight);
+			// const scrollHeight = document.body.scrollHeight;
+			// window.scroll({
+			// 	top: scrollHeight,
+			// 	behavior: 'smooth',
+			// });
+			// console.log('SCROLL HEIGHT: ', scrollHeight);
 		}
 	};
 
@@ -233,24 +232,14 @@ export default function Chat() {
 		input.addEventListener('blur', noScroll, false);
 	});
 
-	function toArray(collection) {
-		return Array.prototype.slice.call(collection);
+	function scrollToBottom() {
+		const scrollHeight = document.body.scrollHeight;
+		window.scroll({
+			top: scrollHeight,
+			behavior: 'smooth',
+		});
 	}
 
-	function noScroll(event) {
-		if (event.type === 'focus') {
-			document.body.classList.add('no-scroll');
-		} else if (event.type === 'blur') {
-			document.body.classList.remove('no-scroll');
-		}
-	}
-
-	var inputs = toArray(document.querySelectorAll('input'));
-
-	inputs.forEach(function (input) {
-		input.addEventListener('focus', noScroll, false);
-		input.addEventListener('blur', noScroll, false);
-	});
 	return (
 		// Actual chat room:
 		<div id='rooms-wrapper'>
@@ -279,13 +268,10 @@ export default function Chat() {
 							</div>
 						</div>
 						{/* <div id='chat-room-info'>
-					<div className='div-test'>Your language: {self.userLangName}</div>
-					<div className='div-test'>
-						Users in the room:
-						<ul className='users-wrapper'>{renderUsers(users)}</ul>
-					</div>
-					
-				</div> */}
+							<div>
+								<ul className='users-wrapper'>{renderUsers(users)}</ul>
+							</div>
+						</div> */}
 						<div id='chat'>
 							<div id='messages-wrapper'>
 								{renderMessages(messages)}
@@ -309,6 +295,7 @@ export default function Chat() {
 							</div>
 						</div>
 					</div>
+					{scrollToBottom()}
 				</div>
 			) : (
 				//CHAT ROOM ABOVE

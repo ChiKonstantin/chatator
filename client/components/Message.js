@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FaChevronDown } from 'react-icons/fa';
+import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 
 export default function Message(props) {
 	const message = props.message;
@@ -20,15 +20,19 @@ export default function Message(props) {
 		return '';
 	};
 
+	const toggelOriginalButton = function () {
+		if (showFlag.show) {
+			return <FaChevronUp />;
+		} else {
+			return <FaChevronDown />;
+		}
+	};
+
 	const renderOriginalButton = function () {
 		if (message.messageType !== 'admin' && message.messageOriginal) {
 			return (
 				<div className='center-text' onClick={originalSwitch}>
-					{/* <button className='header-button' onClick={originalSwitch}> */}
-					<div className='center-text'>
-						<FaChevronDown />
-					</div>
-					{/* </button> */}
+					<div className='center-text'>{toggelOriginalButton()}</div>
 					<div className='left-text'>{renderOriginal()}</div>
 				</div>
 			);
