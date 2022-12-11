@@ -281,6 +281,7 @@ export default function Chat() {
 								<form
 									onSubmit={(event) => handleSendMessage(newMessage, event)}
 									id='message-input-form'
+									autoComplete='off'
 								>
 									<input
 										type='text'
@@ -306,6 +307,7 @@ export default function Chat() {
 						className='form'
 						onSubmit={handleCreateRoom}
 						key='create-room-form'
+						autoComplete='off'
 					>
 						<input
 							type='text'
@@ -332,7 +334,12 @@ export default function Chat() {
 					</form>
 					<div className='waiting-room-headline'>or</div>
 					<div className='waiting-room-headline'>🥔+🥔 JOIN EXISTING ROOM</div>
-					<form className='form' onSubmit={handleJoinRoom} key='join-form'>
+					<form
+						className='form'
+						onSubmit={handleJoinRoom}
+						key='join-form'
+						autoComplete='off'
+					>
 						<input
 							name='joinUserRoom'
 							onChange={handleChange}

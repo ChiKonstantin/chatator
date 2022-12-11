@@ -70,7 +70,12 @@ export default function JoinWLink() {
 				<div className='waiting-room-headline'>
 					🥔+🥔 JOIN ROOM {getRoomCodeFromUrl()}
 				</div>
-				<form className='form' onSubmit={handleJoinRoomWLink} key='join-form'>
+				<form
+					className='form'
+					onSubmit={handleJoinRoomWLink}
+					key='join-form'
+					autoComplete='off'
+				>
 					{/* <input
           name='joinUserRoom'
           onChange={handleChange}
