@@ -170,7 +170,7 @@ export default function Chat() {
 	//need to update the link - modularize
 	const copyLink = function () {
 		navigator.clipboard.writeText(
-			`https://chatator.herokuapp.com/join/${self.userRoom}`
+			`http://www.chatator.com/join/${self.userRoom}`
 		);
 		alert('Link to this room copied to clipboard!');
 	};
